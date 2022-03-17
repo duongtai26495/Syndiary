@@ -16,5 +16,6 @@ public interface UserService {
 
     ResponseEntity<ResponseObject> getById(Long id);
 
+    ResponseEntity<ResponseObject> editUserById(User user);
 
 }

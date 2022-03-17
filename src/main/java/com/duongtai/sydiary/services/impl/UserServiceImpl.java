@@ -90,6 +90,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<ResponseObject> editUserById(User user) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy_hhmmss");
+        User getUser = userRepository.getById(user.getId());
+        getUser.setFullName(user.getFullName());
+        getUser.setRole(user.getRole());
+        getUser.setActive(user.getActive());
+        getUser.setGender(user.getGender());
+        getUser.setLastEdited(sdf.format(date));
+        getUser.setId(user.getId());
+        saveUser(getUser);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(getUser))
+        );
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         return new MyUserDetail(user);
