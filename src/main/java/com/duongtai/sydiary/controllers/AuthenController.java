@@ -27,6 +27,11 @@ public class AuthenController {
     @Autowired
     UserServiceImpl userService;
 
+    @PostMapping("login")
+    public void login () {
+
+    }
+
     @GetMapping("refresh_token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);

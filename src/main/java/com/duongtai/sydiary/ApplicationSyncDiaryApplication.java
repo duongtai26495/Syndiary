@@ -15,5 +15,4 @@ public class ApplicationSyncDiaryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationSyncDiaryApplication.class, args);
 	}
-
 }

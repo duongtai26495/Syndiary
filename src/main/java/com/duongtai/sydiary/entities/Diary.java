@@ -13,8 +13,10 @@ public class Diary {
     @Column(name = "diary_id")
     private Long id;
 
+    @Column(name = "title", length = 255)
     private String title;
 
+    @Column(name = "content", length = 5000)
     private String content;
 
     private String createdAt;
