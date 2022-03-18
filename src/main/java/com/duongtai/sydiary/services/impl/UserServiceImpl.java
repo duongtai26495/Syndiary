@@ -100,9 +100,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         getUser.setGender(user.getGender());
         getUser.setLastEdited(sdf.format(date));
         getUser.setId(user.getId());
-        saveUser(getUser);
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(getUser))
+                new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(userRepository.save(getUser)))
         );
     }
 

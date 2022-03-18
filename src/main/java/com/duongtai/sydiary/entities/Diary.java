@@ -24,7 +24,7 @@ public class Diary {
     private int active;
 
     @ManyToOne()
-    @JoinColumn(name = "author", referencedColumnName = "user_id", insertable = false)
+    @JoinColumn(name = "author", referencedColumnName = "user_id")
     @JsonIgnore
     private User author;
 

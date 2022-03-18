@@ -51,6 +51,6 @@ public class MyUserDetail implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.user.getActive() == 1;
+        return true;
     }
 }
