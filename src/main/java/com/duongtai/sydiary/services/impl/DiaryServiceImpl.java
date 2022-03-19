@@ -20,6 +20,8 @@ import java.util.List;
 @Service
 public class DiaryServiceImpl implements DiaryService {
 
+    private String pattern_time = "dd/MM/yy - hh:mm:ss";
+
     @Autowired
     DiaryRepository diaryRepository;
 
@@ -40,7 +42,7 @@ public class DiaryServiceImpl implements DiaryService {
             User user = userService.findByUsername(getUsernameLogin());
             if (user!=null){
                 Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy_hhmmss");
+                SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
                 diary.setAuthor(user);
                 diary.setCreatedAt(sdf.format(date));
                 diary.setLastEdited(sdf.format(date));
@@ -59,7 +61,7 @@ public class DiaryServiceImpl implements DiaryService {
     public ResponseEntity<ResponseObject> editDiaryById(Diary diary) {
         Diary getDiary = diaryRepository.findById(diary.getId()).get();
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy_hhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
         getDiary.setTitle(diary.getTitle());
         getDiary.setContent(diary.getContent());
         getDiary.setLastEdited(sdf.format(date));

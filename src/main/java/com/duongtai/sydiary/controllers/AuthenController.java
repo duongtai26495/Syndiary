@@ -4,10 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.duongtai.sydiary.configs.CustomAuthenticationFilter;
+import com.duongtai.sydiary.configs.CustomAuthorizationFilter;
+import com.duongtai.sydiary.entities.LoginUser;
 import com.duongtai.sydiary.entities.User;
 import com.duongtai.sydiary.services.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +29,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/auth/")
 public class AuthenController {
 
+
     @Autowired
     UserServiceImpl userService;
 
-    @PostMapping("login")
-    public void login () {
-
-    }
 
     @GetMapping("refresh_token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
