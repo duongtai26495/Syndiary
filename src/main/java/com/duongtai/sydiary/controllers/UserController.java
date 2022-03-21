@@ -15,6 +15,10 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
+    @GetMapping("profile/{username}")
+    public ResponseEntity<ResponseObject> getUserByUsername(@PathVariable String username){
+        return userService.getUserByUsername(username);
+    }
 
     @PostMapping("register")
     public ResponseEntity<ResponseObject> createUser (@RequestBody User user){

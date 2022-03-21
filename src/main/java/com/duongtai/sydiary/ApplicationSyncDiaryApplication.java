@@ -1,5 +1,8 @@
 package com.duongtai.sydiary;
 
+import com.duongtai.sydiary.entities.Role;
+import com.duongtai.sydiary.repositories.RoleRepository;
+import com.duongtai.sydiary.services.impl.RoleServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,5 +17,7 @@ public class ApplicationSyncDiaryApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationSyncDiaryApplication.class, args);
+
 	}
+
 }

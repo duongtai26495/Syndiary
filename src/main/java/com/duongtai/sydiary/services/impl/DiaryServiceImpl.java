@@ -13,14 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DiaryServiceImpl implements DiaryService {
 
-    private String pattern_time = "dd/MM/yy - hh:mm:ss";
+    private String pattern_time = "dd/MM/yy - hh:mm:ss aa";
 
     @Autowired
     DiaryRepository diaryRepository;
@@ -43,6 +41,9 @@ public class DiaryServiceImpl implements DiaryService {
             if (user!=null){
                 Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
+                if(diary.getTitle().isBlank()){
+                    diary.setTitle("Unnamed Diary");
+                }
                 diary.setAuthor(user);
                 diary.setCreatedAt(sdf.format(date));
                 diary.setLastEdited(sdf.format(date));
@@ -98,6 +99,7 @@ public class DiaryServiceImpl implements DiaryService {
                         getList.add(diary);
                     }
                 }
+                Collections.reverse(getList);
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("SUCCESS", "List diary by "+getUsernameLogin(), getList )
                 );

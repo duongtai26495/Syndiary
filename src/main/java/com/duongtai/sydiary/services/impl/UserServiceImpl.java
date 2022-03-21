@@ -22,6 +22,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private String pattern_time = "dd/MM/yy - hh:mm:ss aa";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -43,9 +45,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+
+
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> getUserByUsername(String username) {
+        User user = findByUsername(username);
+        if(user!=null){
+            UserDTO userDTO = ConvertEntity.convertToDTO(user);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("SUCCESS","User founded!",userDTO)
+            );
+        }
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                new ResponseObject("FAILED","User not found!",null)
+        );
     }
 
     @Override
@@ -62,7 +80,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         Role default_role_user = roleService.getRoleByName(ROLE_USER);
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy_hhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
         user.setJoinedAt(sdf.format(date));
@@ -92,7 +110,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<ResponseObject> editUserById(User user) {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy_hhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
         User getUser = userRepository.getById(user.getId());
         getUser.setFullName(user.getFullName());
         getUser.setRole(user.getRole());

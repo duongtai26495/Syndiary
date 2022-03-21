@@ -20,6 +20,11 @@ public class DiaryController {
         return diaryService.createDiary(diary);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getDiaryById(@PathVariable Long id){
+        return diaryService.getDiaryById(id);
+    }
+
     @GetMapping("all")
     public ResponseEntity<ResponseObject> getAllByAuth(){
         return diaryService.findAllByAuthUsername();

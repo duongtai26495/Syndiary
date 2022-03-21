@@ -12,10 +12,13 @@ public interface UserService {
 
     User findByEmail(String email);
 
+    ResponseEntity<ResponseObject> getUserByUsername(String username);
+
     ResponseEntity<ResponseObject> saveUser(User user);
 
     ResponseEntity<ResponseObject> getById(Long id);
 
     ResponseEntity<ResponseObject> editUserById(User user);
+
 
 }
