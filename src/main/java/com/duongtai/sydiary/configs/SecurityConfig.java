@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(STATELESS)
                 .and()
-                    .authorizeRequests().antMatchers("/","/auth/login/**", "/auth/refresh_token", "/user/register").permitAll()
+                    .authorizeRequests().antMatchers("/","/auth/login","/auth/login/**", "/auth/refresh_token", "/user/register").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()
