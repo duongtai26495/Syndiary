@@ -41,7 +41,7 @@ public class DiaryServiceImpl implements DiaryService {
             if (user!=null){
                 Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
-                if(diary.getTitle().isBlank()){
+                if(diary.getTitle().isEmpty()){
                     diary.setTitle("Unnamed Diary");
                 }
                 diary.setAuthor(user);
