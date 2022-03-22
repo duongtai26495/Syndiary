@@ -7,10 +7,14 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.duongtai.sydiary.configs.CustomAuthenticationFilter;
 import com.duongtai.sydiary.configs.CustomAuthorizationFilter;
 import com.duongtai.sydiary.entities.LoginUser;
+import com.duongtai.sydiary.entities.ResponseObject;
+import com.duongtai.sydiary.entities.Role;
 import com.duongtai.sydiary.entities.User;
+import com.duongtai.sydiary.services.impl.RoleServiceImpl;
 import com.duongtai.sydiary.services.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +36,14 @@ public class AuthenController {
 
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    RoleServiceImpl roleService;
+
+    @PostMapping("role_base")
+    public void reacteRoleBase(@RequestBody Role role){
+        roleService.saveNewRole(role);
+    }
 
 
     @GetMapping("refresh_token")
