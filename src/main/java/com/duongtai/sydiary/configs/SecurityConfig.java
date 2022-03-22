@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()
-
                     .addFilter(new CustomAuthenticationFilter(authenticationManagerBean()))
                     .addFilterBefore(customAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
     }
