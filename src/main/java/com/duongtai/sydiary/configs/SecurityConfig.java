@@ -34,12 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(STATELESS)
                 .and()
-                    .authorizeRequests().antMatchers("/auth/role_base","/","/auth/login","/auth/login/**", "/auth/refresh_token", "/user/**").permitAll()
+                    .authorizeRequests().antMatchers("/auth/role_base","/","/auth/login","/auth/login/**","/auth/logout/**", "/auth/refresh_token").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()
+                    .logout()
+                    .logoutUrl("/auth/logout")
+                .and()
                     .addFilter(new CustomAuthenticationFilter(authenticationManagerBean()))
                     .addFilterBefore(customAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Bean
@@ -78,6 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",corsConfiguration);
         return source;
