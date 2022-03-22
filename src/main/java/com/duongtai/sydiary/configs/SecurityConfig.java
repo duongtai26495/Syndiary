@@ -26,18 +26,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(STATELESS)
                 .and()
-                    .authorizeRequests().antMatchers("/auth/role_base","/","/login","/login/**", "/auth/refresh_token", "/user/register").permitAll()
+                    .authorizeRequests().antMatchers("/auth/role_base","/","/auth/login","/auth/login/**", "/auth/refresh_token", "/user/register").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()
                     .addFilter(new CustomAuthenticationFilter(authenticationManagerBean()))
-                    .addFilterBefore(new CustomAuthenticationFilter(authenticationManagerBean()),UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(customAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
