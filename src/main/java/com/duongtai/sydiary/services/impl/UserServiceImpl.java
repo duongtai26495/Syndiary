@@ -16,7 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -119,6 +121,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(userRepository.save(getUser)))
+        );
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> getAll() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user: users) {
+            userDTOs.add(ConvertEntity.convertToDTO(user));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("SUCCESS","Get all user!",userDTOs)
         );
     }
 
