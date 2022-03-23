@@ -7,6 +7,7 @@ import com.duongtai.sydiary.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +43,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
+    public String getUsernameLogin (){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            return authentication.getName();
+        }
+        return null;
+    }
+
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -54,15 +63,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public ResponseEntity<ResponseObject> getUserByUsername(String username) {
-        User user = findByUsername(username);
-        if(user!=null){
-            UserDTO userDTO = ConvertEntity.convertToDTO(user);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("SUCCESS","User founded!",userDTO)
+        if (username.equals(getUsernameLogin())){
+            User user = findByUsername(username);
+            if(user!=null){
+                UserDTO userDTO = ConvertEntity.convertToDTO(user);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("SUCCESS","User founded!",userDTO)
+                );
+            }
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("FAILED","User not found!",null)
             );
         }
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                new ResponseObject("FAILED","User not found!",null)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new ResponseObject("FAILED","You don't have permission!",null)
         );
     }
 
