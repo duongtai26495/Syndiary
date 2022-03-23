@@ -41,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     .logoutUrl("/auth/logout")
                 .and()
-                    .addFilter(new CustomAuthenticationFilter(authenticationManagerBean()))
-                    .addFilterBefore(customAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
+                    .addFilter(customAuthenticationFilter)
+                    .addFilterBefore(new CustomAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 
     }
 

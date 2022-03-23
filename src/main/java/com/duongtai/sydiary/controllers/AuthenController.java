@@ -40,11 +40,6 @@ public class AuthenController {
     @Autowired
     RoleServiceImpl roleService;
 
-    @PostMapping("role_base")
-    public void reacteRoleBase(@RequestBody Role role){
-        roleService.saveNewRole(role);
-    }
-
 
     @GetMapping("refresh_token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {

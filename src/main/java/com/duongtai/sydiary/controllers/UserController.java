@@ -21,11 +21,6 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("all")
-    public ResponseEntity<ResponseObject> getAll(){
-        return userService.getAll();
-    }
-
     @PostMapping("register")
     public ResponseEntity<ResponseObject> createUser (@RequestBody User user){
         return userService.saveUser(user);
