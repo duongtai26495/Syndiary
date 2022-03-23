@@ -36,4 +36,9 @@ public class UserController {
         user.setId(id);
         return userService.editUserById(user);
     }
+
+    @PutMapping("change_password")
+    public ResponseEntity<ResponseObject> updatePasswordByUsername(@RequestBody User user){
+        return userService.updatePassword(user.getPassword());
+    }
 }
