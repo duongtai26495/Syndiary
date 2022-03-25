@@ -18,12 +18,12 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public ResponseEntity<ResponseObject> saveNewRole(Role role) {
         if(roleRepository.getRoleByName(role.getName())!=null){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("SUCCESS","Create role "+role.getName()+" successfully!",roleRepository.save(role))
-            );
-        }else{
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                     new ResponseObject("FAILED","Create role "+role.getName()+" failed, this role already exist!",null)
+            );
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("SUCCESS","Create role "+role.getName()+" successfully!",roleRepository.save(role))
             );
         }
 
