@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface RoleService {
 
-    void saveNewRole(Role role);
+    ResponseEntity<ResponseObject> saveNewRole(Role role);
     Role getRoleByName(String name);
 }
