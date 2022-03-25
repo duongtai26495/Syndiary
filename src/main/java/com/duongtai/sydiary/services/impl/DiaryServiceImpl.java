@@ -67,7 +67,7 @@ public class DiaryServiceImpl implements DiaryService {
         getDiary.setContent(diary.getContent());
         getDiary.setLastEdited(sdf.format(date));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS", "Diary edited", diaryRepository.save(diary))
+                new ResponseObject("SUCCESS", "Diary edited", diaryRepository.save(getDiary))
         );
     }
 
