@@ -42,4 +42,5 @@ public class DiaryController {
         diary.setId(id);
         return diaryService.editDiaryById(diary);
     }
+
 }

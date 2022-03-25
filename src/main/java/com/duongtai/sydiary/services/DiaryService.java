@@ -14,4 +14,5 @@ public interface DiaryService {
     ResponseEntity<ResponseObject> deleteDiaryById(Long id);
 
     ResponseEntity<ResponseObject> findAllByAuthUsername();
+
 }

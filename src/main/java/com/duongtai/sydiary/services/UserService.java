@@ -21,4 +21,5 @@ public interface UserService {
     ResponseEntity<ResponseObject> editUserById(User user);
 
     ResponseEntity<ResponseObject> updatePassword(String newPassword);
+
 }
