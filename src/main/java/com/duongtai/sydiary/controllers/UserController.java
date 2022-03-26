@@ -6,6 +6,9 @@ import com.duongtai.sydiary.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @CrossOrigin
@@ -41,4 +44,10 @@ public class UserController {
     public ResponseEntity<ResponseObject> updatePasswordByUsername(@RequestBody User user){
         return userService.updatePassword(user.getPassword());
     }
+
+    @PostMapping("profile_image")
+    public ResponseEntity<ResponseObject> uploadProfileImage(@RequestParam("image_profile")MultipartFile file) throws IOException {
+        return userService.uploadProfileImage(file);
+    }
+
 }

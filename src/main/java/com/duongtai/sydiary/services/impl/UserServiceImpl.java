@@ -4,7 +4,9 @@ import com.duongtai.sydiary.configs.MyUserDetail;
 import com.duongtai.sydiary.entities.*;
 import com.duongtai.sydiary.repositories.UserRepository;
 import com.duongtai.sydiary.services.UserService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -15,12 +17,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -38,7 +45,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     private static final String ROLE_USER = "ROLE_USER";
-
     public UserServiceImpl() {
 
     }
@@ -149,6 +155,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("SUCCESS","Your password updated!",null)
+        );
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> uploadProfileImage(MultipartFile file) throws IOException {
+        String username = getUsernameLogin();
+       String file_extension = FilenameUtils.getExtension(file.getOriginalFilename());
+       String generatedFileName = username+"_"+UUID.randomUUID().toString().replace("-","");
+       generatedFileName = generatedFileName+"."+file_extension;
+       File dir = new File("uploads/profile_image/"+username);
+       dir.mkdir();
+
+       Path destinationFilePath = Paths.get(dir.getAbsolutePath()).resolve(Paths.get(generatedFileName)).normalize().toAbsolutePath();
+        try(InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("SUCCESS","Upload images successfully",generatedFileName)
         );
     }
 
