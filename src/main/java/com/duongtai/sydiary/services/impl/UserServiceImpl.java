@@ -159,24 +159,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> uploadProfileImage(MultipartFile file) throws IOException {
-        String username = getUsernameLogin();
-       String file_extension = FilenameUtils.getExtension(file.getOriginalFilename());
-       String generatedFileName = username+"_"+UUID.randomUUID().toString().replace("-","");
-       generatedFileName = generatedFileName+"."+file_extension;
-       File dir = new File("uploads/profile_image/"+username);
-       dir.mkdir();
-
-       Path destinationFilePath = Paths.get(dir.getAbsolutePath()).resolve(Paths.get(generatedFileName)).normalize().toAbsolutePath();
-        try(InputStream inputStream = file.getInputStream()) {
-            Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS","Upload images successfully",generatedFileName)
-        );
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         return new MyUserDetail(user);

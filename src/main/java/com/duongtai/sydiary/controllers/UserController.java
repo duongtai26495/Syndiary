@@ -2,19 +2,31 @@ package com.duongtai.sydiary.controllers;
 
 import com.duongtai.sydiary.entities.ResponseObject;
 import com.duongtai.sydiary.entities.User;
+import com.duongtai.sydiary.services.impl.StorageServiceImpl;
 import com.duongtai.sydiary.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @CrossOrigin
 @RestController
 @RequestMapping("/user/")
 public class UserController {
+
+    @Autowired
+    StorageServiceImpl storageService;
 
     @Autowired
     UserServiceImpl userService;
@@ -46,8 +58,22 @@ public class UserController {
     }
 
     @PostMapping("profile_image")
-    public ResponseEntity<ResponseObject> uploadProfileImage(@RequestParam("image_profile")MultipartFile file) throws IOException {
-        return userService.uploadProfileImage(file);
-    }
+    public ResponseEntity<ResponseObject> uploadProfileImage(@RequestParam("image_profile")MultipartFile file)  {
+        try {
 
+
+            String gerenatedFileName = storageService.storeFile(file);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("SUCCESS", "Upload image profile successfully",gerenatedFileName)
+            );
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("FAILURE", "Upload image profile failed,"+e.getMessage(),"")
+            );
+        }
+    }
+    @GetMapping("profile/avatar")
+    public ResponseEntity<ResponseObject> getAvatar() {
+        return storageService.readFile();
+    }
 }

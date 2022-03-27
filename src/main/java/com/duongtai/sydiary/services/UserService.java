@@ -24,6 +24,5 @@ public interface UserService {
 
     ResponseEntity<ResponseObject> updatePassword(String newPassword);
 
-    ResponseEntity<ResponseObject> uploadProfileImage(MultipartFile file) throws IOException;
 
 }
