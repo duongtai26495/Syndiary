@@ -134,6 +134,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User getUser = userRepository.getById(user.getId());
         getUser.setFullName(user.getFullName());
         getUser.setRole(user.getRole());
+        getUser.setProfile_image(user.getProfile_image());
         getUser.setActive(user.getActive());
         getUser.setGender(user.getGender());
         getUser.setLastEdited(sdf.format(date));

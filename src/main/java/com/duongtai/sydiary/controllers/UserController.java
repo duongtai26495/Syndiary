@@ -31,6 +31,8 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
+
+
     @GetMapping("profile/{username}")
     public ResponseEntity<ResponseObject> getUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
@@ -57,23 +59,17 @@ public class UserController {
         return userService.updatePassword(user.getPassword());
     }
 
-    @PostMapping("profile_image")
-    public ResponseEntity<ResponseObject> uploadProfileImage(@RequestParam("image_profile")MultipartFile file)  {
-        try {
 
 
-            String gerenatedFileName = storageService.storeFile(file);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS", "Upload image profile successfully",gerenatedFileName)
-            );
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("FAILURE", "Upload image profile failed,"+e.getMessage(),"")
-            );
-        }
+    @PostMapping("uploadImage")
+    public String uploadImage(@RequestParam("image")MultipartFile file){
+        return storageService.storeFile(file);
     }
-    @GetMapping("profile/avatar")
-    public ResponseEntity<ResponseObject> getAvatar() {
-        return storageService.readFile();
+
+
+    @GetMapping("images/{fileName:.+}")
+    public ResponseEntity<byte[]> readFile (@PathVariable String fileName){
+        return storageService.readFile(fileName);
     }
+
 }

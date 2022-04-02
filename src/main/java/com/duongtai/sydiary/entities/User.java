@@ -35,6 +35,8 @@ public class User {
 
     private int gender;
 
+    private String profile_image;
+
     @OneToMany(targetEntity = Diary.class, mappedBy = "author",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Diary> diaries = new ArrayList<>();
 
@@ -43,6 +45,14 @@ public class User {
     private Role role;
 
     public User() {
+    }
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
     }
 
     public Long getId() {

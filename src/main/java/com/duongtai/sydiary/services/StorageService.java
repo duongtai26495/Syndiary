@@ -8,9 +8,8 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public interface StorageService {
-    public String storeFile (MultipartFile file);
-
-    public Stream<Path> loadAllFile();
-    public ResponseEntity<ResponseObject> readFile();
+    public String storeFile(MultipartFile file);
+    public Stream<Path> loadAllImage();
+    public ResponseEntity<byte[]> readFile(String fileName);
     public void deleteFile();
 }
