@@ -131,12 +131,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ResponseEntity<ResponseObject> editUserById(User user) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
-        User getUser = userRepository.getById(user.getId());
-        getUser.setFullName(user.getFullName());
-        getUser.setRole(user.getRole());
-        getUser.setProfile_image(user.getProfile_image());
-        getUser.setActive(user.getActive());
-        getUser.setGender(user.getGender());
+        User getUser = userRepository.findById(user.getId()).get();
+        if(user.getFullName() != null){
+            getUser.setFullName(user.getFullName());
+        }
+        if(user.getRole() != null){
+            getUser.setRole(user.getRole());
+        }
+        if(user.getProfile_image()!=null){
+            getUser.setProfile_image(user.getProfile_image());
+        }
+        if(user.getActive() != 0 || user.getActive() != 1){
+            getUser.setActive(user.getActive());
+        }
+        if(user.getGender() != 0 || user.getGender() != 1 || user.getGender() != 2){
+            getUser.setGender(user.getGender());
+        }
         getUser.setLastEdited(sdf.format(date));
         getUser.setId(user.getId());
 
