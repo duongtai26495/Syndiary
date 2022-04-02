@@ -72,4 +72,8 @@ public class UserController {
         return storageService.readFile(fileName);
     }
 
+    @GetMapping("logoutSuccess")
+    public String logoutSuccess(){
+        return "Success";
+    }
 }

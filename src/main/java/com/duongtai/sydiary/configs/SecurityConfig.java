@@ -39,15 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/auth/login",
                         "/auth/login/**",
-                        "/auth/logout/**",
+                        "/auth/logout",
                         "/auth/refresh_token",
                         "/user/register",
+                        "/user/logoutSuccess",
                         "/user/images/*").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()
                     .logout()
                     .logoutUrl("/auth/logout")
+                    .logoutSuccessUrl("/user/logoutSuccess")
                 .and()
                     .addFilter(customAuthenticationFilter)
                     .addFilterBefore(new CustomAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
