@@ -50,6 +50,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String storeFile(MultipartFile file) {
+        System.out.println("CHECK");
         try {
             if (file.isEmpty()) {
                 throw new RuntimeException("Failed to store empty file");
