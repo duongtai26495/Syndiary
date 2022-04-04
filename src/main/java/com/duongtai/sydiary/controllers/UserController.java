@@ -62,7 +62,7 @@ public class UserController {
 
 
     @PostMapping("uploadImage")
-    public String uploadImage(@RequestParam("image")MultipartFile file){
+    public ResponseEntity<ResponseObject> uploadImage(@RequestParam("image")MultipartFile file){
         return storageService.storeFile(file);
     }
 

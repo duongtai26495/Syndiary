@@ -49,8 +49,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String storeFile(MultipartFile file) {
-        System.out.println("CHECK");
+    public ResponseEntity<ResponseObject> storeFile(MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 throw new RuntimeException("Failed to store empty file");
@@ -76,7 +75,9 @@ public class StorageServiceImpl implements StorageService {
             try(InputStream inputStream = file.getInputStream()){
                 Files.copy(inputStream,destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
-            return generatedFileName;
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("SUCCESS","Upload profile image success", generatedFileName)
+            );
         }catch (IOException e){
             throw new RuntimeException("Failed to store file",e);
         }
