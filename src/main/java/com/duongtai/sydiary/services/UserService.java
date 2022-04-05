@@ -20,7 +20,7 @@ public interface UserService {
 
     ResponseEntity<ResponseObject> getById(Long id);
 
-    ResponseEntity<ResponseObject> editUserById(User user);
+    ResponseEntity<ResponseObject> editByUsername(User user);
 
     ResponseEntity<ResponseObject> updatePassword(String newPassword);
 

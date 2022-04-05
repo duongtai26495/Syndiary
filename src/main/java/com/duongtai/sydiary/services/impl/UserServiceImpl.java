@@ -128,10 +128,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> editUserById(User user) {
+    public ResponseEntity<ResponseObject> editByUsername(User user) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
-        User getUser = userRepository.findById(user.getId()).get();
+        User getUser = userRepository.findByUsername(user.getUsername());
+        getUser.setId(getUser.getId());
         if(user.getFullName() != null){
             getUser.setFullName(user.getFullName());
         }
@@ -141,14 +142,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if(user.getProfile_image()!=null){
             getUser.setProfile_image(user.getProfile_image());
         }
-        if(user.getActive() != 0 || user.getActive() != 1){
-            getUser.setActive(user.getActive());
-        }
-        if(user.getGender() != 0 || user.getGender() != 1 || user.getGender() != 2){
+
+        if(user.getGender()>=0 && user.getGender() <=2){
             getUser.setGender(user.getGender());
         }
         getUser.setLastEdited(sdf.format(date));
-        getUser.setId(user.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(userRepository.save(getUser)))

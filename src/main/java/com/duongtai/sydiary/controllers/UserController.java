@@ -48,18 +48,16 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PutMapping("edit/{id}")
-    public ResponseEntity<ResponseObject> editById(@PathVariable Long id, @RequestBody User user){
-        user.setId(id);
-        return userService.editUserById(user);
+    @PutMapping("edit/{username}")
+    public ResponseEntity<ResponseObject> editByUsername(@PathVariable String username, @RequestBody User user){
+        user.setUsername(username);
+        return userService.editByUsername(user);
     }
 
     @PutMapping("change_password")
     public ResponseEntity<ResponseObject> updatePasswordByUsername(@RequestBody User user){
         return userService.updatePassword(user.getPassword());
     }
-
-
 
     @PostMapping("uploadImage")
     public ResponseEntity<ResponseObject> uploadImage(@RequestParam("image")MultipartFile file){
