@@ -103,8 +103,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
-        user.setJoinedAt(sdf.format(date));
-        user.setLastEdited(sdf.format(date));
+        user.setJoined_at(sdf.format(date));
+        user.setLast_edited(sdf.format(date));
         user.setRole(default_role_user);
         userRepository.save(user);
 
@@ -133,8 +133,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
         User getUser = userRepository.findByUsername(user.getUsername());
         getUser.setId(getUser.getId());
-        if(user.getFullName() != null){
-            getUser.setFullName(user.getFullName());
+        if(user.getFull_name() != null){
+            getUser.setFull_name(user.getFull_name());
         }
         if(user.getRole() != null){
             getUser.setRole(user.getRole());
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if(user.getGender()>0 && user.getGender() <=2){
             getUser.setGender(user.getGender());
         }
-        getUser.setLastEdited(sdf.format(date));
+        getUser.setLast_edited(sdf.format(date));
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(userRepository.save(getUser)))
@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(passwordEncode);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
-        user.setLastEdited(sdf.format(date));
+        user.setLast_edited(sdf.format(date));
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("SUCCESS","Your password updated!",null)

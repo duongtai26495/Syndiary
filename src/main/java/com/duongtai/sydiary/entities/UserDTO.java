@@ -10,21 +10,21 @@ public class UserDTO {
 
     private Long id;
 
-    private String fullName;
+    private String full_name;
 
     private String email;
 
     private String username;
 
-    private String joinedAt;
+    private String joined_at;
 
-    private String lastEdited;
+    private String last_edited;
 
     private int active;
 
     private int gender;
 
-    private int diariesCount = 0;
+    private int diaries_count = 0;
 
     private Role role;
 
@@ -57,13 +57,6 @@ public class UserDTO {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getEmail() {
         return email;
@@ -79,22 +72,6 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getJoinedAt() {
-        return joinedAt;
-    }
-
-    public void setJoinedAt(String joinedAt) {
-        this.joinedAt = joinedAt;
-    }
-
-    public String getLastEdited() {
-        return lastEdited;
-    }
-
-    public void setLastEdited(String lastEdited) {
-        this.lastEdited = lastEdited;
     }
 
     public int getActive() {
@@ -113,11 +90,35 @@ public class UserDTO {
         this.gender = gender;
     }
 
-    public int getDiariesCount() {
-        return diariesCount;
+    public String getFull_name() {
+        return full_name;
     }
 
-    public void setDiariesCount(int diariesCount) {
-        this.diariesCount = diariesCount;
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public String getJoined_at() {
+        return joined_at;
+    }
+
+    public void setJoined_at(String joined_at) {
+        this.joined_at = joined_at;
+    }
+
+    public String getLast_edited() {
+        return last_edited;
+    }
+
+    public void setLast_edited(String last_edited) {
+        this.last_edited = last_edited;
+    }
+
+    public int getDiaries_count() {
+        return diaries_count;
+    }
+
+    public void setDiaries_count(int diaries_count) {
+        this.diaries_count = diaries_count;
     }
 }

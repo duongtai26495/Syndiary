@@ -45,8 +45,8 @@ public class DiaryServiceImpl implements DiaryService {
                     diary.setTitle("Unnamed Diary");
                 }
                 diary.setAuthor(user);
-                diary.setCreatedAt(sdf.format(date));
-                diary.setLastEdited(sdf.format(date));
+                diary.setCreated_at(sdf.format(date));
+                diary.setLast_edited(sdf.format(date));
                 diary.setActive(1);
                 return ResponseEntity.status(HttpStatus.OK).body(
                   new ResponseObject("SUCCESS","Create diary successfully",diaryRepository.save(diary))
@@ -65,7 +65,7 @@ public class DiaryServiceImpl implements DiaryService {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
         getDiary.setTitle(diary.getTitle());
         getDiary.setContent(diary.getContent());
-        getDiary.setLastEdited(sdf.format(date));
+        getDiary.setLast_edited(sdf.format(date));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("SUCCESS", "Diary edited", diaryRepository.save(getDiary))
         );

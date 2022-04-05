@@ -16,7 +16,7 @@ public class User {
     private Long id;
 
     @Column(name = "full_name")
-    private String fullName;
+    private String full_name;
 
     @Column(name = "email",unique = true)
     private String email;
@@ -27,9 +27,9 @@ public class User {
     private String password;
 
     @Column(name = "joined_at",updatable = false)
-    private String joinedAt;
+    private String joined_at;
 
-    private String lastEdited;
+    private String last_edited;
 
     private int active;
 
@@ -55,20 +55,36 @@ public class User {
         this.profile_image = profile_image;
     }
 
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public String getJoined_at() {
+        return joined_at;
+    }
+
+    public void setJoined_at(String joined_at) {
+        this.joined_at = joined_at;
+    }
+
+    public String getLast_edited() {
+        return last_edited;
+    }
+
+    public void setLast_edited(String last_edited) {
+        this.last_edited = last_edited;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -93,22 +109,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getJoinedAt() {
-        return joinedAt;
-    }
-
-    public void setJoinedAt(String joinedAt) {
-        this.joinedAt = joinedAt;
-    }
-
-    public String getLastEdited() {
-        return lastEdited;
-    }
-
-    public void setLastEdited(String lastEdited) {
-        this.lastEdited = lastEdited;
     }
 
     public int getActive() {

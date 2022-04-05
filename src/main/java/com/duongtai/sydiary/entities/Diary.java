@@ -19,9 +19,9 @@ public class Diary {
     @Column(name = "content", length = 5000)
     private String content;
 
-    private String createdAt;
+    private String created_at;
 
-    private String lastEdited;
+    private String last_edited;
 
     private int active;
 
@@ -57,20 +57,20 @@ public class Diary {
         this.content = content;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
-    public String getLastEdited() {
-        return lastEdited;
+    public String getLast_edited() {
+        return last_edited;
     }
 
-    public void setLastEdited(String lastEdited) {
-        this.lastEdited = lastEdited;
+    public void setLast_edited(String last_edited) {
+        this.last_edited = last_edited;
     }
 
     public int getActive() {
