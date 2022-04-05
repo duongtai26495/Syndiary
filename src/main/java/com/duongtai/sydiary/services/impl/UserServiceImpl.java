@@ -142,8 +142,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if(user.getProfile_image()!=null){
             getUser.setProfile_image(user.getProfile_image());
         }
-
-        if(user.getGender()>=0 && user.getGender() <=2){
+        if(user.getGender()>0 && user.getGender() <=2){
             getUser.setGender(user.getGender());
         }
         getUser.setLastEdited(sdf.format(date));
