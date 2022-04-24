@@ -43,11 +43,6 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<ResponseObject> getById(@PathVariable Long id){
-        return userService.getById(id);
-    }
-
     @PutMapping("edit/{username}")
     public ResponseEntity<ResponseObject> editByUsername(@PathVariable String username, @RequestBody User user){
         user.setUsername(username);
