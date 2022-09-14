@@ -1,10 +1,16 @@
 package com.duongtai.sydiary.services.impl;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.duongtai.sydiary.configs.MyUserDetail;
 import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.*;
+import com.duongtai.sydiary.repositories.BlacklistTokenRepository;
 import com.duongtai.sydiary.repositories.UserRepository;
 import com.duongtai.sydiary.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +37,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.duongtai.sydiary.configs.MyUserDetail.getUsernameLogin;
+import static com.duongtai.sydiary.configs.Snippets.EXPIRATION_TIME;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -42,19 +56,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private BlacklistTokenRepository tokenRepository;
 
     private static final String ROLE_USER = Snippets.ROLE_USER;
     public UserServiceImpl() {
 
     }
 
-    public String getUsernameLogin (){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return authentication.getName();
-        }
-        return null;
-    }
 
     @Override
     public User findByUsername(String username) {
@@ -68,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public ResponseEntity<ResponseObject> getUserByUsername(String username) {
-        if (username.equals(getUsernameLogin())){
+        if (username.equals(getUsernameLogin()) && getUsernameLogin() != null){
             User user = findByUsername(username);
             if(user!=null){
                 UserDTO userDTO = ConvertEntity.convertToDTO(user);
@@ -163,6 +172,44 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Snippets.SUCCESS,Snippets.PASSWORD_UPDATED,null)
         );
+    }
+
+    @Override
+    public synchronized void refreshToken(HttpServletRequest request, HttpServletResponse response, Token old_token) throws IOException {
+
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            try {
+//                tokenRepository.save(old_token);
+                String refresh_token = authorizationHeader.substring("Bearer ".length());
+                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier verifier = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+                String username = decodedJWT.getSubject();
+                User user = userRepository.findByUsername(username);
+                String access_token = JWT.create()
+                        .withSubject(user.getUsername())
+                        .withIssuer(request.getRequestURL().toString())
+//                        .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                        .sign(algorithm);
+
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("access_token",access_token);
+                tokens.put("refresh_token",refresh_token);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+            }catch (Exception exception){
+                response.setHeader("error",exception.getMessage());
+                response.setStatus(FORBIDDEN.value());
+                //response.sendError(FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message",exception.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(),error);
+            }
+        }else {
+            throw new RuntimeException("Refesh token is missing");
+        }
     }
 
     @Override

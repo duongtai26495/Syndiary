@@ -43,9 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/login",
                         "/auth/login/**",
                         "/auth/logout",
-                        "/auth/refresh_token",
+                        "/user/refresh_token",
                         "/user/register",
                         "/user/logoutSuccess",
+                        "/user/profile/*",
                         "/user/images/*").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
@@ -99,4 +100,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**",corsConfiguration);
         return source;
     }
+
 }

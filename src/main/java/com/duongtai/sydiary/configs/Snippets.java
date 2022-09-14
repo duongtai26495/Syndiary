@@ -39,4 +39,9 @@ public class Snippets {
     public static String DIARY_DELETED = "Diary deleted";
     public static String DIARY_EDITED = "Diary edited";
     public static String LIST_DIARY_BY = "List diary by %s";
+    public static String UNTITLED_DIARY = "Untitled Diary";
+    public static String DIARY_CREATE_SUCCESS = "Diary create successfully";
+
+    //token
+    public static final long EXPIRATION_TIME = 900_000;
 }

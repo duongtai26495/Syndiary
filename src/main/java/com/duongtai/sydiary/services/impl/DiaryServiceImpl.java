@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.duongtai.sydiary.configs.MyUserDetail.getUsernameLogin;
+
 @Service
 public class DiaryServiceImpl implements DiaryService {
 
@@ -27,13 +29,6 @@ public class DiaryServiceImpl implements DiaryService {
     @Autowired
     UserServiceImpl userService;
 
-    public String getUsernameLogin (){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return authentication.getName();
-        }
-        return null;
-    }
 
     @Override
     public synchronized ResponseEntity<ResponseObject> createDiary(Diary diary) {
@@ -43,14 +38,14 @@ public class DiaryServiceImpl implements DiaryService {
                 Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
                 if(diary.getTitle().isEmpty()){
-                    diary.setTitle("Unnamed Diary");
+                    diary.setTitle(Snippets.UNTITLED_DIARY);
                 }
                 diary.setAuthor(user);
                 diary.setCreated_at(sdf.format(date));
                 diary.setLast_edited(sdf.format(date));
                 diary.setActive(1);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                  new ResponseObject(Snippets.SUCCESS,"Create diary successfully",diaryRepository.save(diary))
+                  new ResponseObject(Snippets.SUCCESS,Snippets.DIARY_CREATE_SUCCESS,diaryRepository.save(diary))
                 );
             }
         }
