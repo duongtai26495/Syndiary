@@ -34,4 +34,9 @@ public class Snippets {
     public static String CANNOT_STORE_OUSIDE = "Cannot store file ouside current directory";
     public static String STORE_FILE_FAILED = "Failed to store the file";
 
+    //diary
+    public static String DIARY_NOT_FOUND = "Diary not found";
+    public static String DIARY_DELETED = "Diary deleted";
+    public static String DIARY_EDITED = "Diary edited";
+    public static String LIST_DIARY_BY = "List diary by %s";
 }

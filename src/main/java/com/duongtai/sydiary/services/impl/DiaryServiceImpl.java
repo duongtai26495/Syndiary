@@ -4,6 +4,7 @@ import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.*;
 import com.duongtai.sydiary.repositories.DiaryRepository;
 import com.duongtai.sydiary.services.DiaryService;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> createDiary(Diary diary) {
+    public synchronized ResponseEntity<ResponseObject> createDiary(Diary diary) {
         if (getUsernameLogin() != null){
             User user = userService.findByUsername(getUsernameLogin());
             if (user!=null){
@@ -59,30 +60,57 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> editDiaryById(Diary diary) {
-        Diary getDiary = diaryRepository.findById(diary.getId()).get();
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
-        getDiary.setTitle(diary.getTitle());
-        getDiary.setContent(diary.getContent());
-        getDiary.setLast_edited(sdf.format(date));
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Snippets.SUCCESS, "Diary edited", diaryRepository.save(getDiary))
+    public synchronized ResponseEntity<ResponseObject> editDiaryById(Diary diary) {
+        if (getUsernameLogin() != null){
+            if (diaryRepository.existsById(diary.getId())){
+                Diary getDiary = diaryRepository.findById(diary.getId()).get();
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
+                getDiary.setTitle(diary.getTitle());
+                getDiary.setContent(diary.getContent());
+                getDiary.setLast_edited(sdf.format(date));
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(Snippets.SUCCESS, Snippets.DIARY_EDITED, diaryRepository.save(getDiary))
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Snippets.FAILED, Snippets.DIARY_NOT_FOUND,null)
+            );
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
         );
+
+
     }
 
     @Override
     public ResponseEntity<ResponseObject> getDiaryById(Long id) {
+        if (diaryRepository.existsById(id)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Snippets.SUCCESS, Snippets.FOUNDED, diaryRepository.findById(id).get())
+            );
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Snippets.SUCCESS, Snippets.FOUNDED, diaryRepository.findById(id).get())
+                new ResponseObject(Snippets.FAILED, Snippets.DIARY_NOT_FOUND, diaryRepository.findById(id).get())
         );
     }
 
     @Override
-    public ResponseEntity<ResponseObject> deleteDiaryById(Long id) {
-        diaryRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Snippets.SUCCESS, "Diary deleted", null )
+    public synchronized ResponseEntity<ResponseObject> deleteDiaryById(Long id) {
+        if (getUsernameLogin() != null) {
+            if (diaryRepository.existsById(id)) {
+                diaryRepository.deleteById(id);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(Snippets.SUCCESS, Snippets.DIARY_DELETED, null )
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Snippets.FAILED, Snippets.DIARY_NOT_FOUND,null)
+            );
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
         );
     }
 
@@ -99,9 +127,10 @@ public class DiaryServiceImpl implements DiaryService {
                         getList.add(diary);
                     }
                 }
+                getList.sort((o1, o2) -> o1.getLast_edited().compareTo(o2.getLast_edited()));
                 Collections.reverse(getList);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(Snippets.SUCCESS, "List diary by "+getUsernameLogin(), getList )
+                        new ResponseObject(Snippets.SUCCESS, String.format(Snippets.LIST_DIARY_BY,getUsernameLogin()), getList )
                 );
             }
         }
