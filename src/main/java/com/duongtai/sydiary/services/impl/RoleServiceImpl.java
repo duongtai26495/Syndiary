@@ -1,5 +1,6 @@
 package com.duongtai.sydiary.services.impl;
 
+import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.ResponseObject;
 import com.duongtai.sydiary.entities.Role;
 import com.duongtai.sydiary.repositories.RoleRepository;
@@ -19,11 +20,11 @@ public class RoleServiceImpl implements RoleService {
     public ResponseEntity<ResponseObject> saveNewRole(Role role) {
         if(roleRepository.getRoleByName(role.getName())!=null){
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("FAILED","Create role "+role.getName()+" failed, this role already exist!",null)
+                    new ResponseObject(Snippets.FAILED,String.format(Snippets.ROLE_EXIST,role.getName()),null)
             );
         }else{
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("SUCCESS","Create role "+role.getName()+" successfully!",roleRepository.save(role))
+                    new ResponseObject(Snippets.SUCCESS,String.format(Snippets.CREATE_ROLE_SUCCESS,role.getName()),roleRepository.save(role))
             );
         }
 

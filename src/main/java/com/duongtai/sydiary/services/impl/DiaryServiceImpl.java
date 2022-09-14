@@ -1,5 +1,6 @@
 package com.duongtai.sydiary.services.impl;
 
+import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.*;
 import com.duongtai.sydiary.repositories.DiaryRepository;
 import com.duongtai.sydiary.services.DiaryService;
@@ -18,7 +19,6 @@ import java.util.*;
 @Service
 public class DiaryServiceImpl implements DiaryService {
 
-    private String pattern_time = "dd/MM/yy - hh:mm:ss aa";
 
     @Autowired
     DiaryRepository diaryRepository;
@@ -40,7 +40,7 @@ public class DiaryServiceImpl implements DiaryService {
             User user = userService.findByUsername(getUsernameLogin());
             if (user!=null){
                 Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
+                SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
                 if(diary.getTitle().isEmpty()){
                     diary.setTitle("Unnamed Diary");
                 }
@@ -49,12 +49,12 @@ public class DiaryServiceImpl implements DiaryService {
                 diary.setLast_edited(sdf.format(date));
                 diary.setActive(1);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                  new ResponseObject("SUCCESS","Create diary successfully",diaryRepository.save(diary))
+                  new ResponseObject(Snippets.SUCCESS,"Create diary successfully",diaryRepository.save(diary))
                 );
             }
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject("FAILURE","User do not login",null)
+                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
         );
     }
 
@@ -62,19 +62,19 @@ public class DiaryServiceImpl implements DiaryService {
     public ResponseEntity<ResponseObject> editDiaryById(Diary diary) {
         Diary getDiary = diaryRepository.findById(diary.getId()).get();
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
+        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         getDiary.setTitle(diary.getTitle());
         getDiary.setContent(diary.getContent());
         getDiary.setLast_edited(sdf.format(date));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS", "Diary edited", diaryRepository.save(getDiary))
+                new ResponseObject(Snippets.SUCCESS, "Diary edited", diaryRepository.save(getDiary))
         );
     }
 
     @Override
     public ResponseEntity<ResponseObject> getDiaryById(Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS", "Founded !", diaryRepository.findById(id).get())
+                new ResponseObject(Snippets.SUCCESS, Snippets.FOUNDED, diaryRepository.findById(id).get())
         );
     }
 
@@ -82,7 +82,7 @@ public class DiaryServiceImpl implements DiaryService {
     public ResponseEntity<ResponseObject> deleteDiaryById(Long id) {
         diaryRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS", "Diary deleted", null )
+                new ResponseObject(Snippets.SUCCESS, "Diary deleted", null )
         );
     }
 
@@ -101,12 +101,12 @@ public class DiaryServiceImpl implements DiaryService {
                 }
                 Collections.reverse(getList);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("SUCCESS", "List diary by "+getUsernameLogin(), getList )
+                        new ResponseObject(Snippets.SUCCESS, "List diary by "+getUsernameLogin(), getList )
                 );
             }
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject("FAILURE","User do not login",null)
+                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
         );
     }
 

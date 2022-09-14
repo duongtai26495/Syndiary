@@ -1,6 +1,7 @@
 package com.duongtai.sydiary.services.impl;
 
 import com.duongtai.sydiary.configs.MyUserDetail;
+import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.*;
 import com.duongtai.sydiary.repositories.UserRepository;
 import com.duongtai.sydiary.services.UserService;
@@ -32,8 +33,6 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private String pattern_time = "dd/MM/yy - hh:mm:ss aa";
-
     @Autowired
     private UserRepository userRepository;
 
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
 
-    private static final String ROLE_USER = "ROLE_USER";
+    private static final String ROLE_USER = Snippets.ROLE_USER;
     public UserServiceImpl() {
 
     }
@@ -74,15 +73,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             if(user!=null){
                 UserDTO userDTO = ConvertEntity.convertToDTO(user);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("SUCCESS","User founded!",userDTO)
+                        new ResponseObject(Snippets.SUCCESS, Snippets.USER_FOUND,userDTO)
                 );
             }
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("FAILED","User not found!",null)
+                    new ResponseObject(Snippets.FAILED,Snippets.USER_NOT_FOUND,null)
             );
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject("FAILED","You don't have permission!",null)
+                new ResponseObject(Snippets.FAILED,Snippets.YOU_DONT_HAVE_PERMISSION,null)
         );
     }
 
@@ -90,17 +89,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ResponseEntity<ResponseObject> saveUser(User user) {
         if (findByEmail(user.getEmail()) != null){
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                 new ResponseObject("FAILED","This email already taken!",null)
+                 new ResponseObject(Snippets.FAILED,Snippets.EMAIL_ALREADY_TAKEN,null)
                 );
         }
         if (findByUsername(user.getUsername()) != null){
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("FAILED","This username already taken!",null)
+                    new ResponseObject(Snippets.FAILED,Snippets.USERNAME_ALREADY_TAKEN,null)
             );
         }
         Role default_role_user = roleService.getRoleByName(ROLE_USER);
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
+        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
         user.setJoined_at(sdf.format(date));
@@ -110,12 +109,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated()){
-            System.out.println("User logged in");
+            System.out.println(Snippets.USER_LOGGED_IN);
         }else{
-            System.out.println("User not login");
+            System.out.println(Snippets.USER_DO_NOT_LOGIN);
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-            new ResponseObject("SUCCESS","User created successfully",ConvertEntity.convertToDTO(user))
+            new ResponseObject(Snippets.SUCCESS,Snippets.USER_CREATE_SUCCESSFULLY,ConvertEntity.convertToDTO(user))
         );
     }
 
@@ -123,14 +122,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ResponseEntity<ResponseObject> getById(Long id) {
         UserDTO userDTO = ConvertEntity.convertToDTO(userRepository.findById(id).get());
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS","Founded!",userDTO)
+                new ResponseObject(Snippets.SUCCESS,Snippets.USER_FOUND,userDTO)
         );
     }
 
     @Override
     public ResponseEntity<ResponseObject> editByUsername(User user) {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
+        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         User getUser = userRepository.findByUsername(user.getUsername());
         getUser.setId(getUser.getId());
         if(user.getFull_name() != null){
@@ -148,7 +147,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         getUser.setLast_edited(sdf.format(date));
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS","User edited!",ConvertEntity.convertToDTO(userRepository.save(getUser)))
+                new ResponseObject(Snippets.SUCCESS,Snippets.USER_EDITED,ConvertEntity.convertToDTO(userRepository.save(getUser)))
         );
     }
 
@@ -158,11 +157,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String passwordEncode = passwordEncoder.encode(newPassword);
         user.setPassword(passwordEncode);
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern_time);
+        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         user.setLast_edited(sdf.format(date));
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("SUCCESS","Your password updated!",null)
+                new ResponseObject(Snippets.SUCCESS,Snippets.PASSWORD_UPDATED,null)
         );
     }
 

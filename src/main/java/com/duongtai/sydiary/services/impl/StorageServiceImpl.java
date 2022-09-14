@@ -1,5 +1,6 @@
 package com.duongtai.sydiary.services.impl;
 
+import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.ResponseObject;
 import com.duongtai.sydiary.services.StorageService;
 import org.apache.commons.io.FilenameUtils;
@@ -39,7 +40,7 @@ public class StorageServiceImpl implements StorageService {
         try {
             Files.createDirectories(storageFolder);
         }catch (Exception e){
-            throw new RuntimeException("Cannot initialize storage",e);
+            throw new RuntimeException(Snippets.CANNOT_INITIALIZE_STORAGE,e);
         }
     }
     private boolean isImageFile (MultipartFile file){
@@ -52,14 +53,14 @@ public class StorageServiceImpl implements StorageService {
     public ResponseEntity<ResponseObject> storeFile(MultipartFile file) {
         try {
             if (file.isEmpty()) {
-                throw new RuntimeException("Failed to store empty file");
+                throw new RuntimeException(Snippets.FAILED_STORE_EMPTY_FILE);
             }
             if (!isImageFile(file)) {
-                throw new RuntimeException("You can only upload image file");
+                throw new RuntimeException(Snippets.YOU_CAN_ONLY_UPLOAD_IMAGE);
             }
             float fileSize = file.getSize() / 1_000_000.0f;
             if (fileSize > 5.0f) {
-                throw new RuntimeException("Image must be <= 5mb");
+                throw new RuntimeException(Snippets.SIZE_UPLOAD_FILE);
             }
             String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
             String generatedFileName = UUID.randomUUID().toString().replace("-", "");
@@ -69,17 +70,17 @@ public class StorageServiceImpl implements StorageService {
                             Paths.get(generatedFileName))
                     .normalize().toAbsolutePath();
             if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())){
-                throw new RuntimeException("Cannot store file ouside current directory");
+                throw new RuntimeException(Snippets.CANNOT_STORE_OUSIDE);
             }
 
             try(InputStream inputStream = file.getInputStream()){
                 Files.copy(inputStream,destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("SUCCESS","Upload profile image success", generatedFileName)
+                    new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_PROFILE_IMAGE_SUCCESS, generatedFileName)
             );
         }catch (IOException e){
-            throw new RuntimeException("Failed to store file",e);
+            throw new RuntimeException(Snippets.STORE_FILE_FAILED,e);
         }
     }
 
