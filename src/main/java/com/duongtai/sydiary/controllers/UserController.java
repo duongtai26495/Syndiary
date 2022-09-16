@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.ResponseObject;
 import com.duongtai.sydiary.entities.Token;
 import com.duongtai.sydiary.entities.User;
@@ -47,8 +48,6 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-
-
     @GetMapping("profile/{username}")
     public ResponseEntity<ResponseObject> getUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
@@ -75,7 +74,6 @@ public class UserController {
         return storageService.storeFile(file);
     }
 
-
     @GetMapping("images/{fileName:.+}")
     public ResponseEntity<byte[]> readFile (@PathVariable String fileName){
         return storageService.readFile(fileName);
@@ -83,11 +81,11 @@ public class UserController {
 
     @GetMapping("logoutSuccess")
     public String logoutSuccess(){
-        return "Success";
+        return Snippets.SUCCESS;
     }
 
-    @PostMapping("refresh_token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response, @RequestBody Token token) throws IOException {
-        userService.refreshToken(request,response, token);
+    @GetMapping("refresh_token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        userService.refreshToken(request,response);
     }
 }

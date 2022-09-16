@@ -44,4 +44,6 @@ public class Snippets {
 
     //token
     public static final long EXPIRATION_TIME = 900_000;
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
 }

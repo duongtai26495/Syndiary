@@ -42,11 +42,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if (authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
-                        Map<String, String> error = new HashMap<>();
-                        error.put("error_message","Token has expired");
-                        response.setContentType(APPLICATION_JSON_VALUE);
-                        new ObjectMapper().writeValue(response.getOutputStream(),error);
-
                         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                         JWTVerifier verifier = JWT.require(algorithm).build();
                         DecodedJWT decodedJWT = verifier.verify(token);

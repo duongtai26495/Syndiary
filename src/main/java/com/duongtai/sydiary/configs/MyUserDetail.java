@@ -13,7 +13,7 @@ import java.util.*;
 
 public class MyUserDetail implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public MyUserDetail(User user){
         this.user = user;

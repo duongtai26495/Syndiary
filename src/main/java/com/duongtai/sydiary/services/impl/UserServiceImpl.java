@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> saveUser(User user) {
+    public synchronized ResponseEntity<ResponseObject> saveUser(User user) {
         if (findByEmail(user.getEmail()) != null){
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                  new ResponseObject(Snippets.FAILED,Snippets.EMAIL_ALREADY_TAKEN,null)
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> editByUsername(User user) {
+    public synchronized ResponseEntity<ResponseObject> editByUsername(User user) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         User getUser = userRepository.findByUsername(user.getUsername());
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> updatePassword(String newPassword) {
+    public synchronized ResponseEntity<ResponseObject> updatePassword(String newPassword) {
         User user = userRepository.findByUsername(getUsernameLogin());
         String passwordEncode = passwordEncoder.encode(newPassword);
         user.setPassword(passwordEncode);
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public synchronized void refreshToken(HttpServletRequest request, HttpServletResponse response, Token old_token) throws IOException {
+    public synchronized void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
@@ -190,12 +190,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
                         .withIssuer(request.getRequestURL().toString())
-//                        .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token",access_token);
-                tokens.put("refresh_token",refresh_token);
+                tokens.put(Snippets.ACCESS_TOKEN,access_token);
+                tokens.put(Snippets.REFRESH_TOKEN,refresh_token);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),tokens);
             }catch (Exception exception){
