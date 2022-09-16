@@ -24,7 +24,7 @@ public class Snippets {
     public static String CREATE_ROLE_SUCCESS = "The role %s create successfully";
 
     //time
-    public static String TIME_PATTERN = "dd/MM/yy - hh:mm:ss aa";
+    public static String TIME_PATTERN = "dd/MM/yy hh:mm:ss aa";
 
     //file
     public static String CANNOT_INITIALIZE_STORAGE = "Cannot initialize storage";
