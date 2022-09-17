@@ -27,5 +27,5 @@ public interface UserService {
 
     ResponseEntity<ResponseObject> updatePassword(String newPassword);
 
-    void refreshToken(HttpServletRequest request, HttpServletResponse response, Token token) throws IOException;
+    void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

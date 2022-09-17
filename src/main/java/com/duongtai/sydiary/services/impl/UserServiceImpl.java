@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public synchronized void refreshToken(HttpServletRequest request, HttpServletResponse response, Token old_token) throws IOException {
+    public synchronized void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){

@@ -27,7 +27,7 @@ public class DiaryController {
         return diaryService.getDiaryById(id);
     }
 
-    @GetMapping("all")
+    @GetMapping("")
     public ResponseEntity<ResponseObject> getAllByAuth(){
         return diaryService.findAllByAuthUsername();
     }

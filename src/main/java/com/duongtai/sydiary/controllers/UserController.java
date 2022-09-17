@@ -86,8 +86,8 @@ public class UserController {
         return "Success";
     }
 
-    @PostMapping("refresh_token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response, @RequestBody Token token) throws IOException {
-        userService.refreshToken(request,response, token);
+    @GetMapping("refresh_token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        userService.refreshToken(request,response);
     }
 }

@@ -63,6 +63,7 @@ public class DiaryServiceImpl implements DiaryService {
                 SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
                 getDiary.setTitle(diary.getTitle());
                 getDiary.setContent(diary.getContent());
+                getDiary.setColor(diary.getColor());
                 getDiary.setLast_edited(sdf.format(date));
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(Snippets.SUCCESS, Snippets.DIARY_EDITED, diaryRepository.save(getDiary))
