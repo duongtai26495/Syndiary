@@ -25,12 +25,22 @@ public class Diary {
 
     private int active;
 
+    private String color;
+
     @ManyToOne()
     @JoinColumn(name = "author", referencedColumnName = "user_id")
     @JsonIgnore
     private User author;
 
     public Diary() {
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public Long getId() {
