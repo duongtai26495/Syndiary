@@ -18,6 +18,7 @@ public class Snippets {
     public static String UPLOAD_PROFILE_IMAGE_SUCCESS = "Upload profile image success";
     public static String UPLOAD_IMAGE_SUCCESS = "Upload image success";
     public static String NOT_PERMISSION = "You do not permission";
+
     //role
     public static String ROLE_USER = "ROLE_USER";
     public static String ROLE_ADMIN = "ROLE_ADMIN";
@@ -44,7 +45,14 @@ public class Snippets {
     public static String DIARY_CREATE_SUCCESS = "Diary create successfully";
 
     //token
+    public static final String TOKEN_PREFIX = "Bearer ";
     public static final long EXPIRATION_TIME = 900_000;
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
+
+    //authen
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String SECRET_CODE = "secret";
+    public static final String ROLES = "roles";
 }

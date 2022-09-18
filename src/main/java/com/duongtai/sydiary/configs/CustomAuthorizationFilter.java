@@ -35,14 +35,14 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         }else{
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
+            if (authorizationHeader!=null && authorizationHeader.startsWith(Snippets.TOKEN_PREFIX)){
                 try {
-                    String token = authorizationHeader.substring("Bearer ".length());
-                        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    String token = authorizationHeader.substring(Snippets.TOKEN_PREFIX.length());
+                        Algorithm algorithm = Algorithm.HMAC256(Snippets.SECRET_CODE.getBytes());
                         JWTVerifier verifier = JWT.require(algorithm).build();
                         DecodedJWT decodedJWT = verifier.verify(token);
                         String username = decodedJWT.getSubject();
-                        String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                        String[] roles = decodedJWT.getClaim(Snippets.ROLES).asArray(String.class);
                         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                         stream(roles).forEach(role->{
                             authorities.add(new SimpleGrantedAuthority(role));
@@ -57,7 +57,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setStatus(FORBIDDEN.value());
                     //response.sendError(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
-                    error.put("error_message",e.getMessage());
+                    error.put("Error_message",e.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(),error);
                 }
