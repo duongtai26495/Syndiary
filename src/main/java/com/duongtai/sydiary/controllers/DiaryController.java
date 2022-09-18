@@ -1,6 +1,5 @@
 package com.duongtai.sydiary.controllers;
 
-import com.duongtai.sydiary.configs.MyUserDetail;
 import com.duongtai.sydiary.entities.Diary;
 import com.duongtai.sydiary.entities.ResponseObject;
 import com.duongtai.sydiary.services.impl.DiaryServiceImpl;

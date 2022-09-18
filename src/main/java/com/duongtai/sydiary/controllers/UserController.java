@@ -1,42 +1,18 @@
 package com.duongtai.sydiary.controllers;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.ResponseObject;
-import com.duongtai.sydiary.entities.Token;
 import com.duongtai.sydiary.entities.User;
 import com.duongtai.sydiary.services.impl.StorageServiceImpl;
 import com.duongtai.sydiary.services.impl.UserServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static com.duongtai.sydiary.configs.Snippets.EXPIRATION_TIME;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 
 @CrossOrigin
 @RestController
@@ -82,9 +58,9 @@ public class UserController {
 
     }
 
-    @GetMapping("/images/{fileName:.+}")
-    public ResponseEntity<byte[]> readUserImage (@PathVariable String fileName){
-        return storageService.readProfileImage(fileName);
+    @GetMapping("/images/{username}")
+    public ResponseEntity<byte[]> readUserImage (@PathVariable String username){
+        return storageService.readProfileImage(username);
     }
 
     @GetMapping("logoutSuccess")

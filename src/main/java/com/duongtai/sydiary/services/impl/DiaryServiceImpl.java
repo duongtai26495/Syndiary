@@ -4,14 +4,9 @@ import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.*;
 import com.duongtai.sydiary.repositories.DiaryRepository;
 import com.duongtai.sydiary.services.DiaryService;
-import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;

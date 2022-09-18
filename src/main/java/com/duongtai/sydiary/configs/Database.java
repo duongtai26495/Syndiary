@@ -1,7 +1,6 @@
 package com.duongtai.sydiary.configs;
 
 import com.duongtai.sydiary.entities.Role;
-import com.duongtai.sydiary.services.RoleService;
 import com.duongtai.sydiary.services.impl.RoleServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

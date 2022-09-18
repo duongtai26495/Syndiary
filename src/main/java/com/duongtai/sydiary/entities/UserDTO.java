@@ -1,11 +1,5 @@
 package com.duongtai.sydiary.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import java.util.List;
-
 public class UserDTO {
 
     private Long id;

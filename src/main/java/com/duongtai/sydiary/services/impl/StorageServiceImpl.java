@@ -11,23 +11,17 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -58,6 +52,17 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public ResponseEntity<ResponseObject> storeFile(MultipartFile file, String username) {
+            int CHECK_UPLOAD = 0;
+
+            if(username.equals("noname")){
+                CHECK_UPLOAD = 1;
+            }
+            else if(username.equals(getUsernameLogin())){
+                CHECK_UPLOAD = 2;
+            }
+
+        System.out.println("Check : "+CHECK_UPLOAD);
+
         try {
             if (file.isEmpty()) {
                 throw new RuntimeException(Snippets.FAILED_STORE_EMPTY_FILE);
@@ -74,42 +79,43 @@ public class StorageServiceImpl implements StorageService {
             generatedFileName = generatedFileName + "." + fileExtension;
 
 
-            if( !username.equals("noname") && username.equals(getUsernameLogin())){
-                //username not null and equals with token
-                Path destinationFilePath = this.storageFolderProfile.resolve(
-                                Paths.get(generatedFileName))
-                        .normalize().toAbsolutePath();
-                if (!destinationFilePath.getParent().equals(this.storageFolderProfile.toAbsolutePath())){
-                    throw new RuntimeException(Snippets.CANNOT_STORE_OUSIDE);
-                }
-
-                try(InputStream inputStream = file.getInputStream()){
-                    Files.copy(inputStream,destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
-                }
-                System.out.println("Save image to user");
-                User user = new User();
-                user.setUsername(username);
-                user.setProfile_image(generatedFileName);
-                userService.editByUsername(user);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_PROFILE_IMAGE_SUCCESS +" in user "+ username, generatedFileName)
-                );
-            }else{
-                //username null
-                Path destinationFilePath = this.storageFolder.resolve(
-                                Paths.get(generatedFileName))
-                        .normalize().toAbsolutePath();
+            Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName)).normalize().toAbsolutePath();
                 if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())){
                     throw new RuntimeException(Snippets.CANNOT_STORE_OUSIDE);
                 }
 
+            if(CHECK_UPLOAD == 2){
+                destinationFilePath = this.storageFolderProfile.resolve(Paths.get(generatedFileName)).normalize().toAbsolutePath();
+                if (!destinationFilePath.getParent().equals(this.storageFolderProfile.toAbsolutePath())){
+                    throw new RuntimeException(Snippets.CANNOT_STORE_OUSIDE);
+                }
+            }
+
                 try(InputStream inputStream = file.getInputStream()){
                     Files.copy(inputStream,destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
                 }
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_IMAGE_SUCCESS, generatedFileName)
-                );
-            }
+
+                if (CHECK_UPLOAD == 1){
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_IMAGE_SUCCESS, generatedFileName)
+                    );
+
+                }
+                else if(CHECK_UPLOAD == 2){
+                    User user = new User();
+                    user.setUsername(getUsernameLogin());
+                    user.setProfile_image(generatedFileName);
+                    userService.editByUsername(user);
+
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_PROFILE_IMAGE_SUCCESS +" in user "+ username, generatedFileName)
+                    );
+                }
+
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                    new ResponseObject(Snippets.FAILED,Snippets.NOT_PERMISSION, null)
+            );
 
         }catch (IOException e){
             throw new RuntimeException(Snippets.STORE_FILE_FAILED,e);
@@ -144,8 +150,10 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public ResponseEntity<byte[]> readProfileImage(String fileName) {
+    public ResponseEntity<byte[]> readProfileImage(String username) {
+
         try {
+            String fileName = userService.findByUsername(username).getProfile_image();
             Path file = storageFolderProfile.resolve(fileName);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()){

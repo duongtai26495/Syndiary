@@ -1,15 +1,12 @@
 package com.duongtai.sydiary.services;
 
 import com.duongtai.sydiary.entities.ResponseObject;
-import com.duongtai.sydiary.entities.Token;
 import com.duongtai.sydiary.entities.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 public interface UserService {
 
