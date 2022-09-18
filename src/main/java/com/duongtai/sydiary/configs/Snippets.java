@@ -16,6 +16,7 @@ public class Snippets {
     public static String USER_EDITED = "User edited";
     public static String PASSWORD_UPDATED = "Your password updated";
     public static String UPLOAD_PROFILE_IMAGE_SUCCESS = "Upload profile image success";
+    public static String UPLOAD_IMAGE_SUCCESS = "Upload image success";
 
     //role
     public static String ROLE_USER = "ROLE_USER";

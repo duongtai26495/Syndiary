@@ -28,8 +28,9 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-!**/src/resources/application.properties
+/src/resources/application.properties
 local.env
 /uploads/
+
 ### VS Code ###
 .vscode/

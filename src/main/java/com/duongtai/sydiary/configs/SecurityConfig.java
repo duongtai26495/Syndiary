@@ -47,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/register",
                         "/user/logoutSuccess",
                         "/user/profile/*",
-                        "/user/images/*").permitAll()
+                        "/user/images/*",
+                        "/images/*").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()

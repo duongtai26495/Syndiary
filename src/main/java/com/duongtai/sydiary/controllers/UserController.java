@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.duongtai.sydiary.configs.Snippets.EXPIRATION_TIME;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -69,14 +70,21 @@ public class UserController {
         return userService.updatePassword(user.getPassword());
     }
 
-    @PostMapping("uploadImage")
-    public ResponseEntity<ResponseObject> uploadImage(@RequestParam("image")MultipartFile file){
-        return storageService.storeFile(file);
+    @PostMapping("uploadImage/{username}")
+    public ResponseEntity<ResponseObject> uploadImageWithUsername(@RequestParam("image") MultipartFile file, @PathVariable String username){
+            return storageService.storeFile(file, username);
+
     }
 
-    @GetMapping("images/{fileName:.+}")
-    public ResponseEntity<byte[]> readFile (@PathVariable String fileName){
-        return storageService.readFile(fileName);
+    @PostMapping("uploadImage")
+    public ResponseEntity<ResponseObject> uploadImage(@RequestParam("image") MultipartFile file){
+        return storageService.storeFile(file, "noname");
+
+    }
+
+    @GetMapping("/images/{fileName:.+}")
+    public ResponseEntity<byte[]> readUserImage (@PathVariable String fileName){
+        return storageService.readProfileImage(fileName);
     }
 
     @GetMapping("logoutSuccess")
