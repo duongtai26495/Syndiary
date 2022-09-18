@@ -7,7 +7,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.duongtai.sydiary.configs.MyUserDetail;
 import com.duongtai.sydiary.configs.Snippets;
 import com.duongtai.sydiary.entities.*;
-import com.duongtai.sydiary.repositories.BlacklistTokenRepository;
 import com.duongtai.sydiary.repositories.UserRepository;
 import com.duongtai.sydiary.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,9 +44,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private BlacklistTokenRepository tokenRepository;
 
     private static final String ROLE_USER = Snippets.ROLE_USER;
     public UserServiceImpl() {
