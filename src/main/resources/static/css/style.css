@@ -1,0 +1,42 @@
+:root{
+	--color-primary: #FF9494;
+	--color-secondary: #C1EFFF;
+	--color-text-white: #fff;
+	--color-dark: rbga(100,100,100,1);
+	--color-smoke: rgba(200,200,200,1);
+	--font-body:Barlow-Bold;
+}
+body{
+	font-family: Barlow-Bold;
+}
+@font-face {
+	font-family: Barlow-Bold;
+	src: url(../fonts/Barlow-SemiBold.ttf);
+} 
+.nav_header{
+	width:100%;
+	height: auto;
+	background-color: white;
+	border-bottom: 0.5px solid;
+	border-color:var(--color-smoke);
+}
+.active{
+	background-color:var(--color-primary)!important;
+}
+.nav-link{
+	color: var(--color-dark) !important;
+}
+.nav-link:hover{
+	background-color: var(--color-secondary);
+	transition-duration: 300ms;
+	color: var(--color-dark) !important;
+}
+#logo_heading{
+	text-decoration: none;
+	color:var(--color-dark)!important;
+	font-weight:bold!important;
+}
+.nav-logo{
+	margin-top:2rem;
+	margin-bottom:1em!important;
+}

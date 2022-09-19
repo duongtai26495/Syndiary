@@ -13,12 +13,6 @@ public class HomeController {
     @Autowired
     private StorageServiceImpl storageService;
 
-    @GetMapping("")
-    public String homePage(){
-        return "Hello, welcome to Sydiary";
-    }
-
-
     @GetMapping("images/{fileName:.+}")
     public ResponseEntity<byte[]> readFile (@PathVariable String fileName){
         return storageService.readFile(fileName);
