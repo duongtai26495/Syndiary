@@ -16,7 +16,8 @@
 
 
 <div th:fragment="snippets">
-<div th:replace="menu_drawer::menu_drawer" ></div>
+<div th:replace="snippets::menu_drawer" ></div>
+<div th:replace="snippets::diary_content"></div>
 </div>
 <div th:fragment="script_footer" >
 <script th:src="@{js/bootstrap.min.js}"></script>

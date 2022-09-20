@@ -16,17 +16,6 @@
 <li class="nav-item align-self-center">
     <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
   </li> 
- 
-  <li class="nav-item align-self-center">
-    <a class="nav-link " aria-current="page" th:href="@{register}">Contact</a>
-  </li> 
-  <li class="nav-item align-self-center">
-    <a class="nav-link " aria-current="page" th:href="@{register}">User</a>
-  </li> 
-  <li class="nav-item align-self-center">
-    <a class="nav-link " aria-current="page" th:href="@{register}">About us</a>
-  </li> 
-  
    <li class="nav-item align-self-center full_name_nav" >
 	<a class="nav-link " aria-current="page" th:href="@{user}" sec:authorize="isAuthenticated()">
 	[[${#request.userPrincipal.principal.fullname}]]

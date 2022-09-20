@@ -16,6 +16,9 @@
 .header_component{
 	font-weight:bold;
 }
+.diary_title{
+	font-weight:bold;
+}
 .diary_title::after{
 	content:"";
 	background-image:url(https://cdn.shopify.com/s/files/1/0642/0565/2198/files/bottom-arrow.png?v=1663671946);
@@ -27,7 +30,19 @@
     top: 0;
     height:100%;
     width: 14px;
+    rotate: -90deg;
     transition: transform .3s ease;
+}
+
+.diary_content{
+	width:500px;
+	height:100%;
+	background:white;
+	position: fixed;
+	right:0;
+	bottom:0;
+	z-index: 99;
+    box-shadow: -1px 1px 3px 0px rgb(0 0 0 / 20%);
 }
 @media only screen and (min-width: 1024px) {
 .diary_row:hover{
