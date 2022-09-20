@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -52,6 +54,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**").permitAll()
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .authorizeRequests()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/auth_login")
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?warning=true")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .and()
                     .logout()
                     .logoutUrl("/auth/logout")

@@ -34,8 +34,9 @@ public class WebController {
     	} else {
     	    username = principal.toString();
     	}
+        System.out.println("Username: "+username);
     	if(username.equals("anonymousUser")) {
-    		model.addAttribute("warning","unlogin");
+            model.addAttribute("title","Login - Syndiary");
             return new ModelAndView("login", model);
     	}
         model.addAttribute("title","Home - Syndiary");
@@ -57,7 +58,6 @@ public class WebController {
 
     @GetMapping("login")
     public String login_view(ModelMap model){
-    	System.out.println(model.getAttribute("warning"));
         model.addAttribute("title","Login - Syndiary");
         return "login";
     }
