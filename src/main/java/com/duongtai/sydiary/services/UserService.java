@@ -25,4 +25,6 @@ public interface UserService {
     ResponseEntity<ResponseObject> updatePassword(String newPassword);
 
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    
+    boolean createUserWebApp(User user);
 }

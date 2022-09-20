@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragments::header"></head>
-<body>
-<nav th:replace="fragments::nav_desktop"></nav>
+<body id="body_index">
+<div th:replace="fragments::nav_wrapper"></div>
 <div class="container">
-    <h1>Home page</h1>
+
+	<div class="col-md-6 offset-md-3 col-12 list_wrapper">
+	<div class="header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
+		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
+			<div class="diary_title" th:text="${diary.title}" ></div> 
+			<span class="diary_arrow"></span>
+		</div>
+	</div>
+
 </div>
 
+
+<div th:replace="fragments::snippets"></div>
 <div th:replace="fragments::script_footer"></div>
 </body>
 </html>

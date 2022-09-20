@@ -6,8 +6,16 @@
 	--color-smoke: rgba(200,200,200,1);
 	--font-body:Barlow-Bold;
 }
+*{
+	padding:0;
+	margin:0;
+}
 body{
 	font-family: Barlow-Bold;
+}
+
+#body_login{
+	background-color:var(--color-secondary);
 }
 @font-face {
 	font-family: Barlow-Bold;
@@ -20,6 +28,13 @@ body{
 	border-bottom: 0.5px solid;
 	border-color:var(--color-smoke);
 }
+.form-container{
+	margin-top:20%;
+	padding:1.5rem 3rem;
+	background-color:rgba(255,255,255,0.5);
+	border-radius:3%;
+    box-shadow: 0.5px 0.5px 1.5px 0px rgba(0,0,0,0.3);
+}
 .active{
 	background-color:var(--color-primary)!important;
 }
@@ -31,12 +46,100 @@ body{
 	transition-duration: 300ms;
 	color: var(--color-dark) !important;
 }
-#logo_heading{
+.logo_heading{
 	text-decoration: none;
 	color:var(--color-dark)!important;
 	font-weight:bold!important;
 }
 .nav-logo{
-	margin-top:2rem;
+	padding-top:2rem;
 	margin-bottom:1em!important;
+}
+.full_name_nav{
+	display:flex;
+	flex-direction:row;
+}
+.logout_link{
+	display: block;
+    padding: 0.5rem;
+    color:red;
+    text-decoration: none;
+}
+.full_name_nav{
+	border-left:1px solid;
+	border-color:rgba(0,0,0,0.2);
+}
+.nav_mobile{
+	padding:10px 0;
+	width:100%;
+	border-bottom: 0.5px solid;
+	border-color:var(--color-smoke);
+	background-color:white;
+}
+.icon_menu_mobile{
+	width:40px!important;
+	height:40px;
+}
+.logo_authen{
+	height:100px;
+	width:100px!important;
+	margin:auto;
+}
+#menu_drawer{
+	height:100%!important;
+	width:100%!important;
+	background-color:white;
+	position: absolute;
+	z-index:999;
+	top:0px;
+	left:-100%;
+	transition-duration: 500ms;
+}
+#menu_drawer a{
+	font-weight:bold;
+}
+#close_menu{
+	font-weight:bold;
+	color:black;
+	position:absolute;
+	right:10px;
+	bottom:10px;
+	padding:10px;
+}
+#add_new{
+	margin:auto;
+    text-align: end;
+}
+#body_index{
+	background-color:rgba(245,245,245,1);
+}
+.menu_mobile{
+	position:absolute;
+	top:10%;
+}
+@media only screen and (min-width: 768px) {
+	.hidden-desktop{
+		display:none!important;
+	}
+	.hidden-mobile{
+		display:block!important;
+	}
+}
+@media only screen and (max-width: 767px) {
+
+.form-group input{
+	padding:10px;
+}
+.form-container{
+	padding:1.5rem 0.5rem;
+	background:unset;
+	box-shadow:unset;
+	margin-top:35%;
+}
+.hidden-desktop{
+	display:block!important;
+}
+.hidden-mobile{
+	display:none!important;
+}
 }

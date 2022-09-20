@@ -13,66 +13,66 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         http
+        .httpBasic()
+        .and()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(STATELESS)
-                .and()
-                    .authorizeRequests().antMatchers(
-                            "/auth/role_base",
-                        "/",
-                        "/auth/login",
-                        "/auth/login/**",
-                        "/auth/logout",
-                        "/user/refresh_token",
-                        "/user/register",
-                        "/user/logoutSuccess",
-                        "/user/profile/*",
-                        "/user/images/*",
-                        "/images/*",
-                        "/css/**",
-                        "/js/**",
-                        "/images/**",
-                        "/**").permitAll()
-                .and()
-                    .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .authorizeRequests()
+                .authorizeRequests().antMatchers(
+                    "/auth/login",
+                    "/auth/login/**",
+                    "/auth/logout",
+                    "/user/refresh_token",
+                    "/user/register",
+                    "/user/logoutSuccess",
+                    "/user/profile/*",
+                    "/user/images/*").permitAll();
+                
+
+        		http
+                .authorizeRequests().antMatchers(
+                    "/images/**",
+                    "/css/**",
+                    "/js/**",
+                    "/login",
+                	"/register",
+                	"/create_user").permitAll()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/auth_login")
                 .loginPage("/login")
+                .loginProcessingUrl("/j_spring_security_check")
                 .defaultSuccessUrl("/")
-                .failureUrl("/login?warning=true")
-                .usernameParameter("username")
-                .passwordParameter("password")
+                .failureUrl("/login?success=false")
                 .and()
                     .logout()
                     .logoutUrl("/auth/logout")
-                    .logoutSuccessUrl("/user/logoutSuccess")
+                    .logoutSuccessUrl("/login?logout=true")
+                    .permitAll()
                 .and()
-                    .addFilter(customAuthenticationFilter)
-                    .addFilterBefore(new CustomAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
+                .authorizeRequests().anyRequest().authenticated();
 
+        		http
+                .addFilter(customAuthenticationFilter)
+                .addFilterBefore(new CustomAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
     }
+    
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -93,11 +93,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(authenticationProvider());
+//    }
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

@@ -2,6 +2,9 @@ package com.duongtai.sydiary.services;
 
 import com.duongtai.sydiary.entities.Diary;
 import com.duongtai.sydiary.entities.ResponseObject;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 public interface DiaryService {
@@ -15,4 +18,7 @@ public interface DiaryService {
 
     ResponseEntity<ResponseObject> findAllByAuthUsername();
 
+    //for web MVC
+    List<Diary> getAllByAuthUsername();
+    Diary getDiaryByIdforWeb(Long id);
 }

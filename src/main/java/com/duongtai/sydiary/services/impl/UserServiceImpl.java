@@ -203,4 +203,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findByUsername(username);
         return new MyUserDetail(user);
     }
+
+
+    //Web app functions
+	@Override
+	public boolean createUserWebApp(User user) {
+		 if (findByEmail(user.getEmail()) != null 
+			 || findByUsername(user.getUsername()) != null){
+	           	return false;
+	        }else {
+	            Role default_role_user = roleService.getRoleByName(ROLE_USER);
+		        Date date = new Date();
+		        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
+		        user.setPassword(passwordEncoder.encode(user.getPassword()));
+		        user.setActive(1);
+		        user.setJoined_at(sdf.format(date));
+		        user.setLast_edited(sdf.format(date));
+		        user.setRole(default_role_user);
+		        userRepository.save(user);
+		        return true;
+	        }
+	}
 }

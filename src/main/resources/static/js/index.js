@@ -1,5 +1,15 @@
-document.getElementById('logo_heading').innerHTML = "Syndiary".toUpperCase();
 
+let app_name = "Syndiary";
+document.getElementById('logo_heading_desktop').innerHTML = app_name.toUpperCase();
+document.getElementById('logo_heading_mobile').innerHTML = app_name.toUpperCase();
+
+
+function openMenu() {
+	document.getElementById("menu_drawer").style.left = '0%';
+}
+function closeMenu(){
+	document.getElementById("menu_drawer").style.left = '-100%';
+}
 //
 //
 //function login(){

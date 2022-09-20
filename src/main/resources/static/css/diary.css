@@ -1,0 +1,46 @@
+	.list_wrapper{
+	padding:1rem;
+}
+.diary_row{
+	padding:1rem;
+	border-radius:7px;
+    box-shadow: 0.5px 0.5px 1.5px 0px rgba(0,0,0,0.2);
+    background-color:white;
+    height:60px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.header_component{
+	font-weight:bold;
+}
+.diary_title::after{
+	content:"";
+	background-image:url(https://cdn.shopify.com/s/files/1/0642/0565/2198/files/bottom-arrow.png?v=1663671946);
+	background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    position: absolute;
+    right: 1rem;
+    top: 0;
+    height:100%;
+    width: 14px;
+    transition: transform .3s ease;
+}
+@media only screen and (min-width: 1024px) {
+.diary_row:hover{
+	transition-duration: 300ms;
+    box-shadow: 6px 3px 5px 0px rgb(0 0 0 / 20%);
+}
+}
+
+@media only screen and (max-width: 767px) {
+	.list_wrapper{
+	padding:.5rem;
+}
+	.diary_row{
+	padding:1rem 0.5rem;
+}
+}

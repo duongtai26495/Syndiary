@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div th:fragment="menu_drawer" id="menu_drawer">
+<span onclick="closeMenu()" class="btn btn-dark text-white" id="close_menu">Close</span>
+
+<div class="menu_mobile">
+<ul class="nav justify-content-center ">
+	<li class="nav-item col-12">
+    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+  </li> 
+  <li class="nav-item col-12">
+    <a class="nav-link " aria-current="page" th:href="@{register}">Contact</a>
+  </li> 
+  <li class="nav-item  col-12">
+    <a class="nav-link " aria-current="page" th:href="@{register}">User</a>
+  </li> 
+  <li class="nav-item  col-12">
+    <a class="nav-link " aria-current="page" th:href="@{register}">About us</a>
+  </li> 
+   <li class="nav-item  col-12 full_name_nav" >
+	<a class="nav-link " aria-current="page" th:href="@{user}" sec:authorize="isAuthenticated()">
+	[[${#request.userPrincipal.principal.fullname}]]
+	
+	<a class="logout_link" th:href="@{auth/logout}" >Logout</a>
+	</a>
+
+  </li> 
+</ul>
+</div>
+
+</div>
+</body>
+</html>

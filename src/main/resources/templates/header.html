@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<body>
+
+
+<nav th:fragment="nav_desktop" class="justify-content-center nav_header container-fluid hidden-mobile">
+
+<ul class="nav justify-content-center nav-logo">
+<li class="nav-item">  
+<a class="h4 logo_heading" id="logo_heading_desktop" aria-current="page" th:href="@{/}">
+</a>
+</li>
+</ul>
+<ul class="nav justify-content-center">
+<li class="nav-item align-self-center">
+    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+  </li> 
+ 
+  <li class="nav-item align-self-center">
+    <a class="nav-link " aria-current="page" th:href="@{register}">Contact</a>
+  </li> 
+  <li class="nav-item align-self-center">
+    <a class="nav-link " aria-current="page" th:href="@{register}">User</a>
+  </li> 
+  <li class="nav-item align-self-center">
+    <a class="nav-link " aria-current="page" th:href="@{register}">About us</a>
+  </li> 
+  
+   <li class="nav-item align-self-center full_name_nav" >
+	<a class="nav-link " aria-current="page" th:href="@{user}" sec:authorize="isAuthenticated()">
+	[[${#request.userPrincipal.principal.fullname}]]
+	<a class="logout_link" th:href="@{auth/logout}" >Logout</a>
+	</a>
+  </li> 
+</ul>
+</nav>
+
+<nav th:fragment="nav_mobile" class="nav_mobile hidden-desktop" >
+	<div class="d-flex align-items-center">
+		<div class="col-4 justify-content-start">
+		<img th:src="@{https://cdn.shopify.com/s/files/1/0642/0565/2198/files/menu_mobile.png?v=1663662372}" onclick="openMenu()" id="toggle_menu" class="icon_menu_mobile" ><img>
+		</div>
+		<div class="col-4 justify-content-center">
+		<a class="h4 logo_heading" id="logo_heading_mobile" aria-current="page" th:href="@{/}">
+		</a>
+		</div>
+		<div class="col-4 justify-content-end">
+			<a id="add_new" class="h6  nav-link">Add</a>
+		</div>
+	</div>
+</nav>
+</body>
+</html>

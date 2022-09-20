@@ -1,38 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:fragment="header">
     <meta charset="UTF-8">
     <title>[[${title}]]</title>
     <link rel="stylesheet" th:href="@{css/style.css}">
+    <link rel="stylesheet" th:href="@{css/diary.css}">
     <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<nav th:fragment="nav_desktop" class="justify-content-center nav_header container-fluid">
+<div th:fragment="nav_wrapper">
+	<nav th:replace="header::nav_desktop"></nav>
+	<nav th:replace="header::nav_mobile"></nav>
+</div>
 
-<ul class="nav justify-content-center nav-logo">
-<li class="nav-item">  
-<a class="h4" id="logo_heading" aria-current="page" th:href="@{/}">
-</a>
-</li>
-</ul>
-<ul class="nav justify-content-center">
-<li class="nav-item align-self-center">
-    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
-  </li> 
-  <li class="nav-item align-self-center">
-    <a class="nav-link" aria-current="page" th:href="@{register}">Register</a>
-  </li> 
-  <li class="nav-item align-self-center">
-    <a class="nav-link " aria-current="page" th:href="@{register}">Contact</a>
-  </li> 
-  <li class="nav-item align-self-center">
-    <a class="nav-link " aria-current="page" th:href="@{register}">User</a>
-  </li> 
-  <li class="nav-item align-self-center">
-    <a class="nav-link " aria-current="page" th:href="@{register}">About us</a>
-  </li> 
-</ul>
-</nav>
+
+<div th:fragment="snippets">
+<div th:replace="menu_drawer::menu_drawer" ></div>
+</div>
 <div th:fragment="script_footer" >
 <script th:src="@{js/bootstrap.min.js}"></script>
 <script th:src="@{js/index.js}"></script>

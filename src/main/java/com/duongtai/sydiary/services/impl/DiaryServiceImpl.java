@@ -17,7 +17,7 @@ import static com.duongtai.sydiary.configs.MyUserDetail.getUsernameLogin;
 @Service
 public class DiaryServiceImpl implements DiaryService {
 
-
+ 
     @Autowired
     DiaryRepository diaryRepository;
 
@@ -129,5 +129,39 @@ public class DiaryServiceImpl implements DiaryService {
                 new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
         );
     }
+
+    //For web app
+
+	@Override
+	public List<Diary> getAllByAuthUsername() {
+		if (getUsernameLogin()!=null){
+            User user = userService.findByUsername(getUsernameLogin());
+            if (user!=null){
+                List<Diary> diaryList = diaryRepository.findAll();
+                List<Diary> getList = new ArrayList<>();
+                String username = getUsernameLogin();
+                for (Diary diary : diaryList) {
+                    if (diary.getAuthor().getUsername().equals(username)){
+                        getList.add(diary);
+                    }
+                }
+                getList.sort((o1, o2) -> o1.getLast_edited().compareTo(o2.getLast_edited()));
+                Collections.reverse(getList);
+        		return getList;
+            }
+        }
+		return null;
+            
+	}
+
+	@Override
+	public Diary getDiaryByIdforWeb(Long id) {
+		 if (diaryRepository.existsById(id)){
+	            return diaryRepository.findById(id).get();
+	        }
+	      return null;
+	}
+    
+    
 
 }
