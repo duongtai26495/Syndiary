@@ -8,8 +8,14 @@
 	<div class="col-md-6 offset-md-3 col-12 list_wrapper">
 	<div class="header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
 		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
-			<div class="diary_title" th:text="${diary.title}" ></div> 
-			<span class="diary_arrow"></span>
+			<div class="f-lex row accordion_content">
+			<header>
+			<p class="diary_title heading" th:text="${diary.title}" ></p>
+			</header>
+			<div class="content">
+			 <p class="diary_content" th:text="${diary.content}" ></p>
+			</div>
+			 </div>
 		</div>
 	</div>
 
