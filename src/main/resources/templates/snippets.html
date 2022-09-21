@@ -32,7 +32,14 @@
 
 
 <div th:fragment="diary_add" id="diary_add" class="diary_add">
-	
+	<form class="form-group form-new-diary" name="createDiary" th:object="${new_diary}" th:action="@{/save_diary}" method="POST">
+	<p class="h5 col-12 d-flex new_diary_heading" >New diary</p>
+	 <span class="text-success col-12 h5 mt-2" th:if="${create == 'success'}">New diary created successfully</span>
+	 <span class="text-danger col-12 h5 mt-2" th:if="${create == 'failed'}">New diary creation failed</span>
+	<input class="mt-2 form-control col-12" name="title" th:value="${new_diary.content}" placeholder="Title" type="text" />
+	<textarea class="mt-2 form-control col-12" name="content" placeholder="Content" type="text" rows="10" cols="50" maxlength="2000">[[${new_diary.content}]]</textarea>
+	<input class="btn btn-dark col-12 mt-2" type="submit" value="Save" name="submit"/>
+	</form>
 </div>
 </body>
 </html>

@@ -34,3 +34,4 @@ local.env
 
 ### VS Code ###
 .vscode/
+/bin/

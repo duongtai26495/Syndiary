@@ -161,6 +161,27 @@ public class DiaryServiceImpl implements DiaryService {
 	        }
 	      return null;
 	}
+
+	@Override
+	public boolean saveNewDiary(Diary diary) {
+		if (getUsernameLogin() != null){
+            User user = userService.findByUsername(getUsernameLogin());
+            if (user!=null){
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
+                if(diary.getTitle().isEmpty()){
+                    diary.setTitle(Snippets.UNTITLED_DIARY);
+                }
+                diary.setAuthor(user);
+                diary.setCreated_at(sdf.format(date));
+                diary.setLast_edited(sdf.format(date));
+                diary.setActive(1);
+                diaryRepository.save(diary);
+	            return true;
+            }
+        }
+		return false;
+	}
     
     
 

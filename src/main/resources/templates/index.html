@@ -9,7 +9,7 @@
 	<div class="header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
 		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
 			<div class="f-lex row accordion_content">
-			<header>
+			<header class="header_accordion">
 			<p class="diary_title heading" th:text="${diary.title}" ></p>
 			</header>
 			<div class="content">

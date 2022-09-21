@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import com.duongtai.sydiary.entities.Diary;
 import com.duongtai.sydiary.entities.User;
 import com.duongtai.sydiary.services.impl.DiaryServiceImpl;
 import com.duongtai.sydiary.services.impl.UserServiceImpl;
@@ -33,6 +34,7 @@ public class WebController {
     public ModelAndView index(ModelMap model) throws IOException {
         model.addAttribute("title","Home - Syndiary");
         model.addAttribute("diaries",diaryService.getAllByAuthUsername());
+        model.addAttribute("new_diary", new Diary());
         return new ModelAndView("index", model);
     }
      
@@ -64,5 +66,20 @@ public class WebController {
     public String login_view(ModelMap model){ 
         model.addAttribute("title","Login - Syndiary");
         return "login";
+    }
+    
+    @PostMapping("save_diary")
+    public ModelAndView saveDiary(ModelMap model, @ModelAttribute Diary diary) throws IOException {
+
+        model.addAttribute("diaries",diaryService.getAllByAuthUsername());
+    	if(diaryService.saveNewDiary(diary)) {
+    		model.addAttribute("new_diary",diary);
+    		model.addAttribute("create","success");
+    		return new ModelAndView("index", model);
+    	}
+
+		model.addAttribute("new_diary",diary);
+		model.addAttribute("create","failed");
+    	return new ModelAndView("index", model);
     }
 }

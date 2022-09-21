@@ -21,4 +21,6 @@ public interface DiaryService {
     //for web MVC
     List<Diary> getAllByAuthUsername();
     Diary getDiaryByIdforWeb(Long id);
+    
+    boolean saveNewDiary(Diary diary);
 }
