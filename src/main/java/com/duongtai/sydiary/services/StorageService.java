@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public interface StorageService {
-    public ResponseEntity<ResponseObject> storeFile(MultipartFile file, String username);
+    public String storeFile(MultipartFile file, String username);
     public Stream<Path> loadAllImage();
     public ResponseEntity<byte[]> readFile(String fileName);
     public ResponseEntity<byte[]> readProfileImage(String fileName);

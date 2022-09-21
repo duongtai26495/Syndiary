@@ -2,47 +2,49 @@ package com.duongtai.sydiary.configs;
 
 public class Snippets {
     //user
-    public static String FOUNDED = "FOUNDED";
-    public static String USER_NOT_FOUND = "User not found";
-    public static String USER_FOUND = "User found";
-    public static String YOU_DONT_HAVE_PERMISSION = "You don't have permission!";
-    public static String SUCCESS = "SUCCESS";
-    public static String FAILED = "FAILED";
-    public static String EMAIL_ALREADY_TAKEN = "This email already taken!";
-    public static String USERNAME_ALREADY_TAKEN = "This username already taken!";
-    public static String USER_LOGGED_IN = "User logged in";
-    public static String USER_DO_NOT_LOGIN = "User do not login";
-    public static String USER_CREATE_SUCCESSFULLY = "User create successfully";
-    public static String USER_EDITED = "User edited";
-    public static String PASSWORD_UPDATED = "Your password updated";
-    public static String UPLOAD_PROFILE_IMAGE_SUCCESS = "Upload profile image success";
-    public static String UPLOAD_IMAGE_SUCCESS = "Upload image success";
-    public static String NOT_PERMISSION = "You do not permission";
+    public static final String FOUNDED = "FOUNDED";
+    public static final String USER_NOT_FOUND = "User not found";
+    public static final String USER_FOUND = "User found";
+    public static final String YOU_DONT_HAVE_PERMISSION = "You don't have permission!";
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAILED = "FAILED";
+    public static final String EMAIL_ALREADY_TAKEN = "This email already taken!";
+    public static final String USERNAME_ALREADY_TAKEN = "This username already taken!";
+    public static final String USER_LOGGED_IN = "User logged in";
+    public static final String USER_DO_NOT_LOGIN = "User do not login";
+    public static final String USER_CREATE_SUCCESSFULLY = "User create successfully";
+    public static final String USER_EDITED = "User edited";
+    public static final String PASSWORD_UPDATED = "Your password updated";
+    public static final String UPLOAD_PROFILE_IMAGE_SUCCESS = "Upload profile image success";
+    public static final String UPLOAD_IMAGE_SUCCESS = "Upload image success";
+    public static final String NOT_PERMISSION = "You do not permission";
+	public static final String HAVE_ERROR = "Have an error. Try again";
 
     //role
-    public static String ROLE_USER = "ROLE_USER";
-    public static String ROLE_ADMIN = "ROLE_ADMIN";
-    public static String ROLE_EXIST = "Create role %s failed, this role already exist!";
-    public static String CREATE_ROLE_SUCCESS = "The role %s create successfully";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_EXIST = "Create role %s failed, this role already exist!";
+    public static final String CREATE_ROLE_SUCCESS = "The role %s create successfully";
 
     //time
-    public static String TIME_PATTERN = "dd/MM/yy hh:mm:ss aa";
+    public static final String TIME_PATTERN = "dd/MM/yy hh:mm:ss aa";
 
     //file
-    public static String CANNOT_INITIALIZE_STORAGE = "Cannot initialize storage";
-    public static String FAILED_STORE_EMPTY_FILE = "Failed to store empty file";
-    public static String YOU_CAN_ONLY_UPLOAD_IMAGE = "You can only upload image file";
-    public static String SIZE_UPLOAD_FILE = "Image must be <= 5mb";
-    public static String CANNOT_STORE_OUSIDE = "Cannot store file ouside current directory";
-    public static String STORE_FILE_FAILED = "Failed to store the file";
+    public static final String CANNOT_INITIALIZE_STORAGE = "Cannot initialize storage";
+    public static final String FAILED_STORE_EMPTY_FILE = "Failed to store empty file";
+    public static final String YOU_CAN_ONLY_UPLOAD_IMAGE = "You can only upload image file";
+    public static final String SIZE_UPLOAD_FILE = "Image must be <= 5mb";
+    public static final String CANNOT_STORE_OUSIDE = "Cannot store file ouside current directory";
+    public static final String STORE_FILE_FAILED = "Failed to store the file";
 
     //diary
-    public static String DIARY_NOT_FOUND = "Diary not found";
-    public static String DIARY_DELETED = "Diary deleted";
-    public static String DIARY_EDITED = "Diary edited";
-    public static String LIST_DIARY_BY = "List diary by %s";
-    public static String UNTITLED_DIARY = "Untitled Diary";
-    public static String DIARY_CREATE_SUCCESS = "Diary create successfully";
+    public static final String DIARY_NOT_FOUND = "Diary not found";
+    public static final String DIARY_DELETED = "Diary deleted";
+    public static final String DIARY_EDITED = "Diary edited";
+    public static final String LIST_DIARY_BY = "List diary by %s";
+    public static final String UNTITLED_DIARY = "Untitled Diary";
+    public static final String DIARY_CREATE_SUCCESS = "Diary create successfully";
+    public static final String DIARY_FOUND = "Diary found";
 
     //token
     public static final String TOKEN_PREFIX = "Bearer ";

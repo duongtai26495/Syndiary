@@ -8,19 +8,14 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 public interface DiaryService {
-    ResponseEntity<ResponseObject> createDiary(Diary diary);
+    Diary createDiary(Diary diary);
 
-    ResponseEntity<ResponseObject> editDiaryById(Diary diary);
+    Diary editDiaryById(Diary diary);
 
-    ResponseEntity<ResponseObject> getDiaryById(Long id);
+    Diary getDiaryById(Long id);
 
-    ResponseEntity<ResponseObject> deleteDiaryById(Long id);
+    boolean deleteDiaryById(Long id);
 
-    ResponseEntity<ResponseObject> findAllByAuthUsername();
+    List<Diary> findAllByAuthUsername();
 
-    //for web MVC
-    List<Diary> getAllByAuthUsername();
-    Diary getDiaryByIdforWeb(Long id);
-    
-    boolean saveNewDiary(Diary diary);
 }

@@ -33,13 +33,15 @@ public class WebController {
     @GetMapping("")
     public ModelAndView index(ModelMap model) throws IOException {
         model.addAttribute("title","Home - Syndiary");
-        model.addAttribute("diaries",diaryService.getAllByAuthUsername());
+        model.addAttribute("diaries",diaryService.findAllByAuthUsername());
         model.addAttribute("new_diary", new Diary());
         return new ModelAndView("index", model);
     }
      
     @GetMapping("user")
     public String user(ModelMap model){
+
+        model.addAttribute("new_diary", new Diary());
         model.addAttribute("title","User - Syndiary");
         return "user";
     }
@@ -53,7 +55,7 @@ public class WebController {
     
     @PostMapping("create_user")
     public String createUser(ModelMap model, @ModelAttribute User user) {
-    	if(userService.createUserWebApp(user)) {
+    	if(userService.saveUser(user)!=null) {
     		model.addAttribute("register","success");
     		return "login";
     	}
@@ -68,14 +70,13 @@ public class WebController {
         return "login";
     }
     
-    @PostMapping("save_diary")
+    @PostMapping("")
     public ModelAndView saveDiary(ModelMap model, @ModelAttribute Diary diary) throws IOException {
 
-        model.addAttribute("diaries",diaryService.getAllByAuthUsername());
-    	if(diaryService.saveNewDiary(diary)) {
+        model.addAttribute("diaries",diaryService.findAllByAuthUsername());
+    	if(diaryService.createDiary(diary) != null) {
     		model.addAttribute("new_diary",diary);
     		model.addAttribute("create","success");
-    		return new ModelAndView("index", model);
     	}
 
 		model.addAttribute("new_diary",diary);

@@ -51,7 +51,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public ResponseEntity<ResponseObject> storeFile(MultipartFile file, String username) {
+    public String storeFile(MultipartFile file, String username) {
             int CHECK_UPLOAD = 0;
 
             if(username.equals("noname")){
@@ -96,9 +96,7 @@ public class StorageServiceImpl implements StorageService {
                 }
 
                 if (CHECK_UPLOAD == 1){
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_IMAGE_SUCCESS, generatedFileName)
-                    );
+                    return generatedFileName;
 
                 }
                 else if(CHECK_UPLOAD == 2){
@@ -107,16 +105,11 @@ public class StorageServiceImpl implements StorageService {
                     user.setProfile_image(generatedFileName);
                     userService.editByUsername(user);
 
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(Snippets.SUCCESS,Snippets.UPLOAD_PROFILE_IMAGE_SUCCESS +" in user "+ username, generatedFileName)
-                    );
+                    return generatedFileName;
                 }
 
 
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new ResponseObject(Snippets.FAILED,Snippets.NOT_PERMISSION, null)
-            );
-
+            return null;
         }catch (IOException e){
             throw new RuntimeException(Snippets.STORE_FILE_FAILED,e);
         }

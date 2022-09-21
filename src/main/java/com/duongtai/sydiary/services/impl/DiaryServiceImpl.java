@@ -26,7 +26,7 @@ public class DiaryServiceImpl implements DiaryService {
 
 
     @Override
-    public synchronized ResponseEntity<ResponseObject> createDiary(Diary diary) {
+    public synchronized Diary createDiary(Diary diary) {
         if (getUsernameLogin() != null){
             User user = userService.findByUsername(getUsernameLogin());
             if (user!=null){
@@ -39,18 +39,14 @@ public class DiaryServiceImpl implements DiaryService {
                 diary.setCreated_at(sdf.format(date));
                 diary.setLast_edited(sdf.format(date));
                 diary.setActive(1);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                  new ResponseObject(Snippets.SUCCESS,Snippets.DIARY_CREATE_SUCCESS,diaryRepository.save(diary))
-                );
+                return diaryRepository.save(diary);
             }
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
-        );
+        return null;
     }
 
     @Override
-    public synchronized ResponseEntity<ResponseObject> editDiaryById(Diary diary) {
+    public synchronized Diary editDiaryById(Diary diary) {
         if (getUsernameLogin() != null){
             if (diaryRepository.existsById(diary.getId())){
                 Diary getDiary = diaryRepository.findById(diary.getId()).get();
@@ -60,53 +56,37 @@ public class DiaryServiceImpl implements DiaryService {
                 getDiary.setContent(diary.getContent());
                 getDiary.setColor(diary.getColor());
                 getDiary.setLast_edited(sdf.format(date));
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(Snippets.SUCCESS, Snippets.DIARY_EDITED, diaryRepository.save(getDiary))
-                );
+                return diaryRepository.save(getDiary);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(Snippets.FAILED, Snippets.DIARY_NOT_FOUND,null)
-            );
+           
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
-        );
+        return null;
 
 
     }
 
     @Override
-    public ResponseEntity<ResponseObject> getDiaryById(Long id) {
+    public Diary getDiaryById(Long id) {
         if (diaryRepository.existsById(id)){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(Snippets.SUCCESS, Snippets.FOUNDED, diaryRepository.findById(id).get())
-            );
+           return diaryRepository.findById(id).get();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Snippets.FAILED, Snippets.DIARY_NOT_FOUND, diaryRepository.findById(id).get())
-        );
+        return null;
     }
 
     @Override
-    public synchronized ResponseEntity<ResponseObject> deleteDiaryById(Long id) {
+    public synchronized boolean deleteDiaryById(Long id) {
         if (getUsernameLogin() != null) {
             if (diaryRepository.existsById(id)) {
-                diaryRepository.deleteById(id);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(Snippets.SUCCESS, Snippets.DIARY_DELETED, null )
-                );
+            	diaryRepository.deleteById(id);
+                return true;
             }
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(Snippets.FAILED, Snippets.DIARY_NOT_FOUND,null)
-            );
+           
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
-        );
+       return false;
     }
 
     @Override
-    public ResponseEntity<ResponseObject> findAllByAuthUsername() {
+    public List<Diary> findAllByAuthUsername() {
         if (getUsernameLogin()!=null){
             User user = userService.findByUsername(getUsernameLogin());
             if (user!=null){
@@ -120,69 +100,10 @@ public class DiaryServiceImpl implements DiaryService {
                 }
                 getList.sort((o1, o2) -> o1.getLast_edited().compareTo(o2.getLast_edited()));
                 Collections.reverse(getList);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(Snippets.SUCCESS, String.format(Snippets.LIST_DIARY_BY,getUsernameLogin()), getList )
-                );
+                return getList;
             }
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                new ResponseObject(Snippets.FAILED,Snippets.USER_DO_NOT_LOGIN,null)
-        );
+        return null;
     }
-
-    //For web app
-
-	@Override
-	public List<Diary> getAllByAuthUsername() {
-		if (getUsernameLogin()!=null){
-            User user = userService.findByUsername(getUsernameLogin());
-            if (user!=null){
-                List<Diary> diaryList = diaryRepository.findAll();
-                List<Diary> getList = new ArrayList<>();
-                String username = getUsernameLogin();
-                for (Diary diary : diaryList) {
-                    if (diary.getAuthor().getUsername().equals(username)){
-                        getList.add(diary);
-                    }
-                }
-                getList.sort((o1, o2) -> o1.getLast_edited().compareTo(o2.getLast_edited()));
-                Collections.reverse(getList);
-        		return getList;
-            }
-        }
-		return null;
-            
-	}
-
-	@Override
-	public Diary getDiaryByIdforWeb(Long id) {
-		 if (diaryRepository.existsById(id)){
-	            return diaryRepository.findById(id).get();
-	        }
-	      return null;
-	}
-
-	@Override
-	public boolean saveNewDiary(Diary diary) {
-		if (getUsernameLogin() != null){
-            User user = userService.findByUsername(getUsernameLogin());
-            if (user!=null){
-                Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
-                if(diary.getTitle().isEmpty()){
-                    diary.setTitle(Snippets.UNTITLED_DIARY);
-                }
-                diary.setAuthor(user);
-                diary.setCreated_at(sdf.format(date));
-                diary.setLast_edited(sdf.format(date));
-                diary.setActive(1);
-                diaryRepository.save(diary);
-	            return true;
-            }
-        }
-		return false;
-	}
-    
-    
 
 }

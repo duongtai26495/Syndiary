@@ -4,22 +4,25 @@
 	--color-text-white: #fff;
 	--color-dark: rbga(100,100,100,1);
 	--color-smoke: rgba(200,200,200,1);
-	--font-body:Barlow-Bold;
 }
 *{
 	padding:0;
 	margin:0;
 }
 body{
-	font-family: Barlow-Bold;
+	overflow-x: hidden!important;
 }
 
 #body_login{
 	background-color:var(--color-secondary);
 }
 @font-face {
-	font-family: Barlow-Bold;
+	font-family: Barlow-Semibold;
 	src: url(../fonts/Barlow-SemiBold.ttf);
+} 
+@font-face {
+	font-family: Barlow-Medium;
+	src: url(../fonts/Barlow-Medium.ttf);
 } 
 .nav_header{
 	width:100%;
@@ -27,6 +30,9 @@ body{
 	background-color: white;
 	border-bottom: 0.5px solid;
 	border-color:var(--color-smoke);
+}
+.container{
+	min-height:100vh;
 }
 .form-container{
 	margin-top:20%;
@@ -118,12 +124,19 @@ p{
     align-items: center;
     z-index: 9999;
 }
+.footer{
+	height:100px;
+	width:100%;
+	background:var(--color-primary);
+	
+}
+
 @media only screen and (min-width: 768px) {
 	.hidden-desktop{
 		display:none!important;
 	}
 	.hidden-mobile{
-		display:block!important;
+		display:block;
 	}
 }
 @media only screen and (max-width: 767px) {
@@ -138,12 +151,31 @@ p{
 	margin-top:35%;
 }
 .hidden-desktop{
-	display:block!important;
+	display:block;
 }
 .hidden-mobile{
 	display:none!important;
 }
 .nav-link:hover{
 	background-color: transparent;
+}
+.bottom_nav{
+	height:50px;
+	width:100%;
+	position: fixed;
+	bottom:0;
+	left:0;
+	background:white;
+	border-top: 0.5px solid rgba(0,0,0,0.2);
+	z-index: 99;
+	display:flex;
+    align-items: center;
+}
+.form-sort{
+    border: unset;
+    width: 100%;
+    padding-left: 5px;
+    text-align: center;
+    background:transparent;
 }
 }

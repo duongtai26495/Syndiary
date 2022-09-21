@@ -8,20 +8,25 @@
 	<div class="col-md-6 offset-md-3 col-12 list_wrapper">
 	<div class="header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
 		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
-			<div class="f-lex row accordion_content">
+			<div class="d-flex accordion_content">
+			<div>
 			<header class="header_accordion">
 			<p class="diary_title heading" th:text="${diary.title}" ></p>
+			
+			<img class="accordion_arrow" src="https://cdn.shopify.com/s/files/1/0642/0565/2198/files/bottom-arrow.png?v=1663671946"/>
 			</header>
 			<div class="content">
 			 <p class="diary_content" th:text="${diary.content}" ></p>
 			</div>
+			</div>
 			 </div>
+			 
 		</div>
 	</div>
 
 </div>
 
-
+<div th:replace="snippets::bottom_nav"></div>
 <div th:replace="fragments::snippets"></div>
 <div th:replace="fragments::script_footer"></div>
 </body>

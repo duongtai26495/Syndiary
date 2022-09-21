@@ -1,6 +1,8 @@
 package com.duongtai.sydiary.repositories;
 
 import com.duongtai.sydiary.entities.User;
+import com.duongtai.sydiary.entities.UserDTO;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

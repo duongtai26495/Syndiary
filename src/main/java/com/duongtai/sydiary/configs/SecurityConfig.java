@@ -41,7 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/auth/logout",
                     "/user/refresh_token",
                     "/user/register",
-                    "/user/logoutSuccess",
                     "/user/profile/*",
                     "/user/images/*").permitAll();
                 
