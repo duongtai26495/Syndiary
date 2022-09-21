@@ -25,7 +25,7 @@
 .diary_title{
 	font-weight:500;
     text-align: left;
-    max-height:60px;
+    max-height:30px;
     overflow: hidden;
     font-size:18px;
     transition: .1s ;
@@ -81,9 +81,9 @@
 .accordion_arrow{
     height: 14px;
     position: relative;
-    transition: .1s ;
+    transition: .5s ;
     width: 14px!important;
-    margin:auto;
+    margin-top:8px;
   
 }
 @media only screen and (min-width: 1024px) {
@@ -116,7 +116,7 @@
 .diary_content{
 	font-size:16px;
 }
-#add_new{
-    border-left:0.5px solid rgba(0,0,0,0.2);
+#add_new {
+    text-align: end;
 }
 }

@@ -57,4 +57,10 @@ public class Snippets {
     public static final String PASSWORD = "password";
     public static final String SECRET_CODE = "secret";
     public static final String ROLES = "roles";
+    
+    //sort
+    public static final String LAST_EDITED = "last_edited";
+    public static final String CREATED_AT = "created_at";
+    public static final String A_Z = "az";
+    public static final String Z_A = "za";
 }

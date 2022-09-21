@@ -45,7 +45,7 @@
 				content.style.height = '0px';
 				content.style.marginTop = '0px';
 				arrow.style.rotate = '0deg';
-				title.style.maxHeight = '60px';
+				title.style.maxHeight = '30px';
 			}
 		}
 	})

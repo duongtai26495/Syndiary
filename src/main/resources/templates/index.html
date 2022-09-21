@@ -6,10 +6,19 @@
 <div class="container">
 
 	<div class="col-md-6 offset-md-3 col-12 list_wrapper">
-	<div class="header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
-		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
+	<div class="d-flex mt-2">
+	<div class="col-6 header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
+	<form class="d-flex col-md-3 offset-md-3 form-sort" th:action="@{/?sort={sort}}">
+	Sort:
+		<select onchange="this.form.submit()" class="form-sort" id="sort" name="sort">
+	            <option th:each="sort : ${sorts}" th:text="${sort}" th:value="${sort}" th:selected="${sorted} == ${sort}"></option>
+        </select>
+	</form>
+	</div>
+	
+		<div class="diary_row mt-3"  th:each="diary : ${diaries}">
 			<div class="d-flex accordion_content">
-			<div>
+			<div class="col-12">
 			<header class="header_accordion">
 			<p class="diary_title heading" th:text="${diary.title}" ></p>
 			
@@ -26,7 +35,6 @@
 
 </div>
 
-<div th:replace="snippets::bottom_nav"></div>
 <div th:replace="fragments::snippets"></div>
 <div th:replace="fragments::script_footer"></div>
 </body>

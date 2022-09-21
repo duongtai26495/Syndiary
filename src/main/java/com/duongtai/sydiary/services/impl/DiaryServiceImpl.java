@@ -98,8 +98,8 @@ public class DiaryServiceImpl implements DiaryService {
                         getList.add(diary);
                     }
                 }
-                getList.sort((o1, o2) -> o1.getLast_edited().compareTo(o2.getLast_edited()));
-                Collections.reverse(getList);
+//                getList.sort((o1, o2) -> o1.getLast_edited().compareTo(o2.getLast_edited()));
+//                Collections.reverse(getList);
                 return getList;
             }
         }

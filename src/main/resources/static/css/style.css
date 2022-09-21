@@ -130,7 +130,15 @@ p{
 	background:var(--color-primary);
 	
 }
-
+.form-sort{
+    border: unset;
+    width: 100%;
+    padding: 1px;
+    padding-left:5px;
+    text-align: center;
+    background:transparent;
+    color:black;
+}
 @media only screen and (min-width: 768px) {
 	.hidden-desktop{
 		display:none!important;
@@ -171,11 +179,5 @@ p{
 	display:flex;
     align-items: center;
 }
-.form-sort{
-    border: unset;
-    width: 100%;
-    padding-left: 5px;
-    text-align: center;
-    background:transparent;
-}
+
 }
