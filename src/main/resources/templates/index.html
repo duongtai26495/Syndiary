@@ -5,8 +5,8 @@
 <div th:replace="fragments::nav_wrapper"></div>
 <div class="container">
 
-	<div class="col-md-6 offset-md-3 col-12 list_wrapper">
-	<div class="d-flex mt-2">
+	<div class="col-md-8 offset-md-2 col-12 list_wrapper">
+	<div class="d-flex mt-1">
 	<div class="col-6 header_component" th:text="'Total '+ ${#lists.size(diaries)} + ' diaries'"></div>
 	<form class="d-flex col-md-3 offset-md-3 form-sort" th:action="@{/?sort={sort}}">
 	Sort:
@@ -16,25 +16,50 @@
 	</form>
 	</div>
 	
-		<div class="diary_row mt-3"  th:each="diary : ${diaries}">
+		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
+		<!--- content row effect---> 
 			<div class="d-flex accordion_content">
-			<div class="col-12">
-			<header class="header_accordion">
-			<p class="diary_title heading" th:text="${diary.title}" ></p>
+				<div class="col-12">
+					<div class="d-flex">
+						<header class="header_accordion col-11">
+							<div class="title_block">
+							<span class="diary_time" th:text="${diary.last_edited}"></span>
+							<p class="diary_title heading" th:text="${diary.title}" ></p>
+							</div>
+						</header>
+						<div class="col-1">
+							<div class="title_right">
+								<img class="diary_option" src="https://cdn.shopify.com/s/files/1/0642/0565/2198/files/dots.png?v=1663768385"/>
+								<img class="accordion_arrow" src="https://cdn.shopify.com/s/files/1/0642/0565/2198/files/bottom-arrow.png?v=1663671946"/>	
+							</div>
+						
+					</div>		
+					<div class="delete_view">
+						<form class="form-group" method="POST" th:action="@{/delete?id=}+${diary.id}">
+							<input type="submit" value="Confirm" class="btn btn-warning col-12 mt-2" />
+							<button type="button" id="cancel_delete" class="btn btn-light col-12 mt-2">Cancel</button>
+						</form>
+					</div>
+					</div>
+					<div class="content">
+					 <p class="diary_content" th:text="${diary.content}" ></p>
+					</div>
+				</div>
 			
-			<img class="accordion_arrow" src="https://cdn.shopify.com/s/files/1/0642/0565/2198/files/bottom-arrow.png?v=1663671946"/>
-			</header>
-			<div class="content">
-			 <p class="diary_content" th:text="${diary.content}" ></p>
-			</div>
-			</div>
+			 <div class="option_view">
+			 	<ul class="nav">
+			 		<li class="nav-item col-12"><a class="nav-link" th:href="@{/diary?id=}+${diary.id}">Edit</a></li>
+			 		<li class="nav-item col-12"><p id="confirm_delete" class="nav-link" >Delete</p></li>
+			 	</ul> 
 			 </div>
-			 
+			 </div>
+			 <!-- end content row effect -->
 		</div>
 	</div>
 
 </div>
 
+<div th:replace="snippets::diary_add"></div>
 <div th:replace="fragments::snippets"></div>
 <div th:replace="fragments::script_footer"></div>
 </body>

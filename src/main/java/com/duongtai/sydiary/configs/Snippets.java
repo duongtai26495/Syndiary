@@ -61,6 +61,6 @@ public class Snippets {
     //sort
     public static final String LAST_EDITED = "last_edited";
     public static final String CREATED_AT = "created_at";
-    public static final String A_Z = "az";
-    public static final String Z_A = "za";
+    public static final String A_Z = "a-z";
+    public static final String Z_A = "z-a";
 }

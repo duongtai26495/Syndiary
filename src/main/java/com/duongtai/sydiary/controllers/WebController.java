@@ -36,7 +36,7 @@ public class WebController {
 	private UserServiceImpl userService;
 	
     @GetMapping("")
-    public ModelAndView index_sort(ModelMap model, @PathParam("sort") String sort) throws IOException {
+    public String index_sort(ModelMap model, @PathParam("sort") String sort) throws IOException {
     	List<Diary> diaries = diaryService.findAllByAuthUsername();
     	if(sort == null) {
     		sort = Snippets.LAST_EDITED;
@@ -48,7 +48,7 @@ public class WebController {
         model.addAttribute("sorted",sort);
         model.addAttribute("diaries",SortDiary.sortByCondition(diaryService.findAllByAuthUsername(), sort));
         model.addAttribute("new_diary", new Diary());
-        return new ModelAndView("index", model);
+        return "index";
     }
     @GetMapping("user")
     public String user(ModelMap model){
@@ -86,4 +86,28 @@ public class WebController {
     	diaryService.createDiary(diary);
     	return "redirect:/";
     }
+    
+    @GetMapping("diary")
+    public String editDiary(ModelMap model, @PathParam("id") long id) {
+    	Diary diary = diaryService.getDiaryById(id);
+    	model.addAttribute("title", diary.getTitle());
+    	model.addAttribute("diary", diary);
+    	return "editdiary";
+    }
+    
+    @PostMapping("edit_diary")
+    public String save_edit_diary(ModelMap model, @PathParam("id") long id, @ModelAttribute Diary diary) {
+    	if(diaryService.getDiaryById(id) != null) {
+    		if(diaryService.editDiaryById(diary) != null) {
+    			model.addAttribute("edit","success");
+    			model.addAttribute("diary",diary);
+    			return "editdiary";
+    		}
+    		model.addAttribute("edit","failed");
+    		model.addAttribute("diary",diary);
+    		return "editdiary";
+    	}
+    	return "redirect:/";
+    }
 }
+

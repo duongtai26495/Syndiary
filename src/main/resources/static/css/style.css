@@ -11,10 +11,11 @@
 }
 body{
 	overflow-x: hidden!important;
+	background-color:rgba(245,245,245,1)!important;
 }
 
 #body_login{
-	background-color:var(--color-secondary);
+	background-color:var(--color-secondary)!important;
 }
 @font-face {
 	font-family: Barlow-Semibold;
@@ -91,7 +92,7 @@ body{
 	height:100%!important;
 	width:100%!important;
     background-color: rgba(255,255,255,.3);
-	position: absolute;
+    position: fixed;
 	z-index:999;
 	top:0px;
 	left:-100%;
@@ -112,9 +113,6 @@ p{
 	padding:10px;
 }
 
-#body_index{
-	background-color:rgba(245,245,245,1);
-}
 .menu_mobile{
 	position:absolute;
     width: 80%;

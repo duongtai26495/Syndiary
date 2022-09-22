@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::header"></head>
+<body>
+<div th:replace="fragments::nav_wrapper"></div>
+
+<div class="container">
+
+	<div class="col-md-4 offset-md-4 col-12 list_wrapper">
+		<div class="d-flex mt-1 edit_view">
+	<form class="form-group form-new-diary" onsubmit='return(validateDiary());' name="createDiary" th:object="${diary}" th:action="@{/edit_diary?id=}+${diary.id}" method="POST">
+	<p class="h5 col-12 d-flex new_diary_heading" >[[${diary.title}]]</p>
+	 <span class="text-success col-12 h5 mt-2" th:if="${edit == 'success'}">Diary edited</span>
+	 <span class="text-danger col-12 h5 mt-2" th:if="${edit == 'failed'}">Diary cannot edit</span>
+	 <span class="text-danger col-12 h5 mt-2" id="validation_diary">Title and content cannot empty</span>
+	<input class="mt-2 form-control col-12" id="title_new_diary" name="title" th:value="${diary.title}" placeholder="Title" type="text" />
+	<textarea class="mt-2 form-control col-12" id="content_new_diary" name="content" placeholder="Content" rows="10" cols="50" maxlength="2000">[[${diary.content}]]</textarea>
+	<input class="btn btn-dark col-12 mt-2" type="submit" value="Save" name="submit"/>
+	<a type="button" th:href="@{/}" class="btn btn-light col-12 mt-2">Back to home</a>
+	</form>
+		</div>
+	</div>
+</div>
+<div th:replace="fragments::snippets"></div>
+<div th:replace="fragments::script_footer"></div>
+</body>
+</html>
