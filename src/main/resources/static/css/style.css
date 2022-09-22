@@ -65,6 +65,7 @@ body{
 .full_name_nav{
 	display:flex;
 	flex-direction:row;
+	position: relative;
 }
 .logout_link{
 	display: block;

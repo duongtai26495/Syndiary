@@ -13,17 +13,17 @@
 				id="logo_heading_desktop" aria-current="page" th:href="@{/}"> </a></li>
 		</ul>
 		<ul class="nav justify-content-center">
-		<li class="nav-item align-self-center full_name_nav"><a
-				id="add_new" class="h6 btn nav-link add_new">Add</a></li>
-			<li class="nav-item align-self-center"><a
-				class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+		<li class="nav-item align-self-center full_name_nav">
+			<a th:if="${nav == 'home'}" id="add_new" class="h6 btn nav-link add_new">Add</a></li>
+			<li class="nav-item align-self-center">
+			<a th:class="${nav} == 'home' ? 'nav-link active' : 'nav-link' " aria-current="page" th:href="@{/}">Home</a>
 			</li>
-			<li class="nav-item align-self-center full_name_nav"><a
-				class="nav-link " aria-current="page" th:href="@{user}"
+			<li th:class="${nav} == 'user' ? 'nav-item align-self-center full_name_nav active' : 'nav-item align-self-center full_name_nav' " class="">
+			<a class="nav-link full_name_nav" aria-current="page" th:href="@{user}"
 				sec:authorize="isAuthenticated()">
 					[[${#request.userPrincipal.principal.fullname}]] 
-					<a class="logout_link" th:href="@{auth/logout}">Logout</a>
-			</a></li>
+			</a>
+			</li>
 			
 		</ul>
 	</nav>
@@ -40,7 +40,7 @@
 					aria-current="page" th:href="@{/}"> </a>
 			</div>
 			<div class="col-4 justify-content-end">
-			<a id="add_new" class="h6 btn btn-ligh nav-link add_new_mobile">Add</a>
+			<a id="add_new" th:if="${nav == 'home'}" class="h6 btn btn-ligh nav-link add_new_mobile">Add</a>
 			</div>
 		</div>
 	</nav>

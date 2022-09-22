@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +23,10 @@ import com.duongtai.sydiary.entities.Diary;
 import com.duongtai.sydiary.entities.User;
 import com.duongtai.sydiary.services.impl.DiaryServiceImpl;
 import com.duongtai.sydiary.services.impl.UserServiceImpl;
+
+import net.bytebuddy.matcher.ModifierMatcher.Mode;
+
+import static com.duongtai.sydiary.configs.MyUserDetail.getUsernameLogin;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,13 +53,17 @@ public class WebController {
         model.addAttribute("title","Home - Syndiary");
         model.addAttribute("sorted",sort);
         model.addAttribute("diaries",SortDiary.sortByCondition(diaryService.findAllByAuthUsername(), sort));
+        model.addAttribute("nav", "home");
         model.addAttribute("new_diary", new Diary());
         return "index";
     }
     @GetMapping("user")
     public String user(ModelMap model){
+    	User user = userService.findByUsername(getUsernameLogin());
+    	model.addAttribute("user", user);
         model.addAttribute("new_diary", new Diary());
         model.addAttribute("title","User - Syndiary");
+        model.addAttribute("nav", "user");
         return "user";
     }
     
@@ -73,10 +83,11 @@ public class WebController {
     	model.addAttribute("register","duplicate");
     	model.addAttribute("user",user);
     	return "register";
-    }
+    } 
 
     @GetMapping("login") 
-    public String login_view(ModelMap model){ 
+    public String login_view(ModelMap model, @PathParam("logout") String logout){
+    	model.addAttribute("logout", logout);
         model.addAttribute("title","Login - Syndiary");
         return "login";
     }
@@ -106,6 +117,17 @@ public class WebController {
     		model.addAttribute("edit","failed");
     		model.addAttribute("diary",diary);
     		return "editdiary";
+    	}
+    	return "redirect:/";
+    }
+    
+    @PostMapping("delete")
+    public String delete_diary(ModelMap model, @PathParam("id") long id) {
+    	if(diaryService.getDiaryById(id) != null) {
+    		if(!diaryService.deleteDiaryById(id)) {
+    			model.addAttribute("delete", "failed");
+    			return "index";
+    		}
     	}
     	return "redirect:/";
     }

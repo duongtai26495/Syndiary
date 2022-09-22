@@ -1,10 +1,8 @@
-	
+
 	let app_name = "Syndiary";
 	document.getElementById('logo_heading_desktop').innerHTML = app_name.toUpperCase();
 	document.getElementById('logo_heading_mobile').innerHTML = app_name.toUpperCase();
 	
-	const confirm_delete = document.getElementById("confirm_delete");
-	const cancel_delete = document.getElementById("cancel_delete");
 	const add_new_mobile = document.querySelector(".add_new_mobile");
 	const add_new = document.querySelector(".add_new");
 	const diary_add = document.getElementById("diary_add");
@@ -27,12 +25,15 @@
 	const accordionContent = document.querySelectorAll(".accordion_content");
 	accordionContent.forEach((item, index)=>{
 		
+		let confirm_delete = item.querySelector(".confirm_delete");
 		let option = item.querySelector(".title_right");
 		let option_view = item.querySelector(".option_view");
 		let arrow = item.querySelector(".accordion_arrow");
 		let header = item.querySelector("header");
 		let title = item.querySelector(".diary_title");
 		let delete_view = item.querySelector(".delete_view");
+		let cancel_delete = item.querySelector(".cancel_delete");
+		let cancel_option = item.querySelector(".cancel_option");
 		
 		header.addEventListener("click",()=>{
 			content_toggle();
@@ -48,12 +49,17 @@
 		} 
 		
 		confirm_delete.addEventListener("click",()=>{
-			delete_view.classList.toggle("show");
+			delete_view.classList.add("show");
+			option_view.classList.remove("show");
+			removeShow(index)
+			
+		})
+		cancel_option.addEventListener("click",()=>{
 			option_view.classList.remove("show");
 		})
-		
 		cancel_delete.addEventListener("click",()=>{
 			option_view.classList.remove("show");
+			delete_view.classList.remove("show");
 		})
 		
 		const content_toggle = () => {
@@ -97,6 +103,10 @@
 		accordionContent.forEach((item2, index2)=>{
 			if(index != index2){
 				let option_view = item2.querySelector(".option_view");
+				
+				let confirm_delete = item2.querySelector(".confirm_delete");
+				
+				confirm_delete.classList.remove("show");
 				option_view.classList.remove("show");
 			}
 		})
@@ -117,7 +127,7 @@ function validateDiary (){
 	let title = document.getElementById("title_new_diary").value;
 	let content = document.getElementById("content_new_diary").value;
 	let valid = document.getElementById("validation_diary");
-	if(title == "" || content == ""){
+	if(title == ""){
 		validation_diary.style.display = 'block';
 		return false;	
 	}else{
@@ -125,6 +135,5 @@ function validateDiary (){
 		return true;	
 	}
 }
-
 
 	

@@ -11,24 +11,23 @@
 <div class="menu_mobile">
 <ul class="nav justify-content-center ">
 	<li class="nav-item col-12">
-    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+    <a th:class="${nav} == 'home' ? 'nav-link active' : 'nav-link'" aria-current="page" th:href="@{/}">Home</a>
   </li> 
    <li class="nav-item  col-12 full_name_nav" >
-	<a class="nav-link " aria-current="page" th:href="@{user}" sec:authorize="isAuthenticated()">
+	<a th:class="${nav} == 'user' ? 'nav-link active col-12' : 'nav-link'" aria-current="page" th:href="@{user}" sec:authorize="isAuthenticated()">
 	[[${#request.userPrincipal.principal.fullname}]]
 	
-	<a class="logout_link" th:href="@{auth/logout}" >Logout</a>
 	</a>
 
   </li> 
 </ul>
 
-<span class="btn btn-dark text-white" id="close_menu">Close</span>
+<span class="btn btn-warning text-white" id="close_menu">Close</span>
 </div>
 </div>
 
 
-<div th:fragment="diary_add" id="diary_add" class="diary_add">
+<div  th:fragment="diary_add" id="diary_add" class="diary_add">
 	<form class="form-group form-new-diary" onsubmit='return(validateDiary());' name="createDiary" th:object="${new_diary}" th:action="@{/}" method="POST">
 	<p class="h5 col-12 d-flex new_diary_heading" >New diary</p>
 	 <span class="text-success col-12 h5 mt-2" th:if="${create == 'success'}">New diary created successfully</span>
@@ -36,9 +35,12 @@
 	 <span class="text-danger col-12 h5 mt-2" id="validation_diary">Title and content cannot empty</span>
 	<input class="mt-2 form-control col-12" id="title_new_diary" name="title" th:value="${new_diary.content}" placeholder="Title" type="text" />
 	<textarea class="mt-2 form-control col-12" id="content_new_diary" name="content" placeholder="Content" rows="10" cols="50" maxlength="2000">[[${new_diary.content}]]</textarea>
+
 	<input class="btn btn-dark col-12 mt-2" type="submit" value="Save" name="submit"/>
 	<button type="button" id="close_new" class="btn btn-light col-12 mt-2">Cancel</button>
 	</form>
+	<div id="editor"></div>
+
 </div>
 
 

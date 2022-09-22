@@ -15,13 +15,16 @@
         </select>
 	</form>
 	</div>
+
 	
 		<div class="diary_row mt-2"  th:each="diary : ${diaries}">
 		<!--- content row effect---> 
 			<div class="d-flex accordion_content">
 				<div class="col-12">
 					<div class="d-flex">
+					<span th:if="${delete} == 'failed'">Delete failed</span>
 						<header class="header_accordion col-11">
+					
 							<div class="title_block">
 							<span class="diary_time" th:text="${diary.last_edited}"></span>
 							<p class="diary_title heading" th:text="${diary.title}" ></p>
@@ -36,20 +39,23 @@
 					</div>		
 					<div class="delete_view">
 						<form class="form-group" method="POST" th:action="@{/delete?id=}+${diary.id}">
+			 				<p class="nav-item col-12">You want to delete : <br/><strong>[[${diary.title}]]</strong></p>
 							<input type="submit" value="Confirm" class="btn btn-warning col-12 mt-2" />
-							<button type="button" id="cancel_delete" class="btn btn-light col-12 mt-2">Cancel</button>
+							<button type="button"class="btn btn-light col-12 mt-2 cancel_delete">Cancel</button>
 						</form>
 					</div>
 					</div>
 					<div class="content">
-					 <p class="diary_content" th:text="${diary.content}" ></p>
+					
+					 <p class="diary_content" th:utext="${diary.content}"></p>
 					</div>
 				</div>
 			
 			 <div class="option_view">
 			 	<ul class="nav">
 			 		<li class="nav-item col-12"><a class="nav-link" th:href="@{/diary?id=}+${diary.id}">Edit</a></li>
-			 		<li class="nav-item col-12"><p id="confirm_delete" class="nav-link" >Delete</p></li>
+			 		<li class="nav-item col-12"><p class="nav-link confirm_delete" >Delete</p></li>
+			 		<li class="nav-item col-12"><p class="nav-link cancel_option" >Cancel</p></li>
 			 	</ul> 
 			 </div>
 			 </div>
