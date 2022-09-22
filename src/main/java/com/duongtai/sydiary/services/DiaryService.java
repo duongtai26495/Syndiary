@@ -2,20 +2,17 @@ package com.duongtai.sydiary.services;
 
 import com.duongtai.sydiary.entities.Diary;
 import com.duongtai.sydiary.entities.ResponseObject;
-
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 public interface DiaryService {
-    Diary createDiary(Diary diary);
+    ResponseEntity<ResponseObject> createDiary(Diary diary);
 
-    Diary editDiaryById(Diary diary);
+    ResponseEntity<ResponseObject> editDiaryById(Diary diary);
 
-    Diary getDiaryById(Long id);
+    ResponseEntity<ResponseObject> getDiaryById(Long id);
 
-    boolean deleteDiaryById(Long id);
+    ResponseEntity<ResponseObject> deleteDiaryById(Long id);
 
-    List<Diary> findAllByAuthUsername();
+    ResponseEntity<ResponseObject> findAllByAuthUsername();
 
 }

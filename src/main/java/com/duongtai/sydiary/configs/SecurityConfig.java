@@ -19,59 +19,44 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         http
-        .httpBasic()
-        .and()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
-                .authorizeRequests().antMatchers(
-                    "/auth/login",
-                    "/auth/login/**",
-                    "/auth/logout",
-                    "/user/refresh_token",
-                    "/user/register",
-                    "/user/profile/*",
-                    "/user/images/*").permitAll();
-                
-
-        		http
-                .authorizeRequests().antMatchers(
-                    "/images/**",
-                    "/css/**",
-                    "/js/**",
-                    "/login",
-                	"/register",
-                	"/create_user").permitAll()
+                .sessionManagement().sessionCreationPolicy(STATELESS)
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/j_spring_security_check")
-                .defaultSuccessUrl("/")
-                .failureUrl("/login?success=false")
+                    .authorizeRequests().antMatchers(
+                            "/auth/role_base",
+                        "/",
+                        "/auth/login",
+                        "/auth/login/**",
+                        "/auth/logout",
+                        "/user/refresh_token",
+                        "/user/register",
+                        "/user/logoutSuccess",
+                        "/user/profile/*",
+                        "/user/images/*",
+                        "/images/*").permitAll()
+                .and()
+                    .authorizeRequests().anyRequest().authenticated()
                 .and()
                     .logout()
                     .logoutUrl("/auth/logout")
-                    .logoutSuccessUrl("/login?logout=true")
-                    .permitAll()
+                    .logoutSuccessUrl("/user/logoutSuccess")
                 .and()
-                .authorizeRequests().anyRequest().authenticated();
+                    .addFilter(customAuthenticationFilter)
+                    .addFilterBefore(new CustomAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 
-        		http
-                .addFilter(customAuthenticationFilter)
-                .addFilterBefore(new CustomAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
     }
-    
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -92,15 +77,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(authenticationProvider());
-//    }
-    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(authenticationProvider());
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

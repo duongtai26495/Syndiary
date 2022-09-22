@@ -56,14 +56,7 @@ public class MyUserDetail implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
-    public String getAvatar() {
-    	return this.user.getProfile_image();
-    }
-    public String getFullname() {
-    	return this.user.getFull_name();
-    }
-    
+
     public static String getUsernameLogin (){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {

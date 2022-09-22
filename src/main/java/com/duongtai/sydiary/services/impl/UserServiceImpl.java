@@ -53,39 +53,45 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User findByUsername(String username) {
-    	User user = userRepository.findByUsername(username);
-    	if( user != null) {
-    		return user;
-    	}
-        return null;
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public User findByEmail(String email) {
-    	User user = userRepository.findByEmail(email);
-    	if( user != null) {
-    		return user;
-    	}
-        return null;
+        return userRepository.findByEmail(email);
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public ResponseEntity<ResponseObject> getUserByUsername(String username) {
         if (username.equals(getUsernameLogin()) && getUsernameLogin() != null){
-            User user = userRepository.findByUsername(username);
+            User user = findByUsername(username);
             if(user!=null){
-                return user;
+                UserDTO userDTO = ConvertEntity.convertToDTO(user);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(Snippets.SUCCESS, Snippets.USER_FOUND,userDTO)
+                );
             }
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject(Snippets.FAILED,Snippets.USER_NOT_FOUND,null)
+            );
         }
-		return null;
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new ResponseObject(Snippets.FAILED,Snippets.YOU_DONT_HAVE_PERMISSION,null)
+        );
     }
 
     @Override
-    public synchronized User saveUser(User user) {
-        if (findByEmail(user.getEmail()) != null || findByUsername(user.getUsername()) != null){
-            return null;
+    public synchronized ResponseEntity<ResponseObject> saveUser(User user) {
+        if (findByEmail(user.getEmail()) != null){
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                 new ResponseObject(Snippets.FAILED,Snippets.EMAIL_ALREADY_TAKEN,null)
+                );
         }
-    
+        if (findByUsername(user.getUsername()) != null){
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject(Snippets.FAILED,Snippets.USERNAME_ALREADY_TAKEN,null)
+            );
+        }
         Role default_role_user = roleService.getRoleByName(ROLE_USER);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
@@ -94,25 +100,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setJoined_at(sdf.format(date));
         user.setLast_edited(sdf.format(date));
         user.setRole(default_role_user);
-        
+        userRepository.save(user);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated()){
-            System.out.println(Snippets.USER_LOGGED_IN + " with: "+getUsernameLogin());
+            System.out.println(Snippets.USER_LOGGED_IN);
         }else{
             System.out.println(Snippets.USER_DO_NOT_LOGIN);
         }
-        
-        return userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ResponseObject(Snippets.SUCCESS,Snippets.USER_CREATE_SUCCESSFULLY,ConvertEntity.convertToDTO(user))
+        );
     }
 
     @Override
-    public User getById(Long id) {
-        return userRepository.findById(id).get();
+    public ResponseEntity<ResponseObject> getById(Long id) {
+        UserDTO userDTO = ConvertEntity.convertToDTO(userRepository.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Snippets.SUCCESS,Snippets.USER_FOUND,userDTO)
+        );
     }
 
     @Override
-    public synchronized User editByUsername(User user) {
+    public synchronized ResponseEntity<ResponseObject> editByUsername(User user) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         User getUser = userRepository.findByUsername(user.getUsername());
@@ -130,23 +140,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             getUser.setGender(user.getGender());
         }
         getUser.setLast_edited(sdf.format(date));
-        
-        return userRepository.save(getUser);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Snippets.SUCCESS,Snippets.USER_EDITED,ConvertEntity.convertToDTO(userRepository.save(getUser)))
+        );
     }
 
     @Override
-    public synchronized boolean updatePassword(String newPassword) {
+    public synchronized ResponseEntity<ResponseObject> updatePassword(String newPassword) {
         User user = userRepository.findByUsername(getUsernameLogin());
-        if(user != null) {
-            String passwordEncode = passwordEncoder.encode(newPassword);
-            user.setPassword(passwordEncode);
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
-            user.setLast_edited(sdf.format(date));
-            userRepository.save(user);
-            return true;
-        }
-    return false;
+        String passwordEncode = passwordEncoder.encode(newPassword);
+        user.setPassword(passwordEncode);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
+        user.setLast_edited(sdf.format(date));
+        userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Snippets.SUCCESS,Snippets.PASSWORD_UPDATED,null)
+        );
     }
 
     @Override
@@ -192,5 +203,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findByUsername(username);
         return new MyUserDetail(user);
     }
-
 }
